@@ -1,0 +1,9 @@
+# Core dependencies for hardware-inventory-viz
+PyYAML>=6.0      # Used for configuration file parsing
+lxml>=4.9.3      # Used for XML processing in SVG generation
+Pillow>=10.0.0   # Used for image manipulation if needed
+
+# Development dependencies (optional)
+pytest>=7.4.0    # For running tests
+black>=23.7.0    # For code formatting
+pylint>=2.17.5   # For linting

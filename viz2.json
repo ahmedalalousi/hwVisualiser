@@ -1,0 +1,2503 @@
+{
+  "chassis": [
+    {
+      "id": "p770_9117_MMD_SN65544CF_CAB4",
+      "name": "p770-9117-MMD-SN65544CF-CAB4",
+      "model": "p770 9117",
+      "serial": "65544CF",
+      "totalCPU": 0.0,
+      "totalMemory": 0.0,
+      "lpars": [
+        {
+          "id": "boi24hrsbaix2",
+          "name": "boi24hrsbaix2",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbcdaa2",
+          "name": "bbcdaa2",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbciga61",
+          "name": "bbciga61",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": [
+            {
+              "id": "bbciga61_License_tool",
+              "name": "License tool",
+              "type": "License tool",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "9.2"
+                },
+                {
+                  "name": "",
+                  "version": "7.2"
+                }
+              ]
+            },
+            {
+              "id": "bbciga61_SDK_software_developer_kit",
+              "name": "SDK software developer kit",
+              "type": "SDK software developer kit",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                }
+              ]
+            },
+            {
+              "id": "bbciga61_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bbciga62",
+          "name": "bbciga62",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbciga63",
+          "name": "bbciga63",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": [
+            {
+              "id": "bbciga63_Web_server",
+              "name": "Web server",
+              "type": "Web server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8.5"
+                }
+              ]
+            },
+            {
+              "id": "bbciga63_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.1"
+                },
+                {
+                  "name": "",
+                  "version": "7.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga63_IBM_Application_server",
+              "name": "IBM Application server",
+              "type": "IBM Application server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8.5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bbcima1",
+          "name": "bbcima1",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": [
+            {
+              "id": "bbcima1_License_tool",
+              "name": "License tool",
+              "type": "License tool",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "9.2"
+                },
+                {
+                  "name": "",
+                  "version": "7.2"
+                }
+              ]
+            },
+            {
+              "id": "bbcima1_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.1"
+                },
+                {
+                  "name": "",
+                  "version": "7.1"
+                }
+              ]
+            },
+            {
+              "id": "bbcima1_AIX_OS",
+              "name": "AIX OS",
+              "type": "AIX OS",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.1"
+                }
+              ]
+            },
+            {
+              "id": "bbcima1_IBM_Application_server",
+              "name": "IBM Application server",
+              "type": "IBM Application server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8"
+                }
+              ]
+            },
+            {
+              "id": "bbcima1_SDK_software_developer_kit",
+              "name": "SDK software developer kit",
+              "type": "SDK software developer kit",
+              "count": 7,
+              "items": [
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "besada2",
+          "name": "besada2",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bmdtda1",
+          "name": "bmdtda1",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbiiqaa1b",
+          "name": "bbiiqaa1b",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbiipaa1a",
+          "name": "bbiipaa1a",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMD_SN061C000_CAB3",
+      "name": "p770-9117-MMD-SN061C000-CAB3",
+      "model": "p770 9117",
+      "serial": "061C000",
+      "totalCPU": 4.0,
+      "totalMemory": 98.0,
+      "lpars": [
+        {
+          "id": "bbcdaa1",
+          "name": "bbcdaa1",
+          "cpu": 1.0,
+          "memory": 6.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbciga51",
+          "name": "bbciga51",
+          "cpu": 1.0,
+          "memory": 16.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": [
+            {
+              "id": "bbciga51_License_tool",
+              "name": "License tool",
+              "type": "License tool",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "9.2"
+                },
+                {
+                  "name": "",
+                  "version": "7.2"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_SDK_software_developer_kit",
+              "name": "SDK software developer kit",
+              "type": "SDK software developer kit",
+              "count": 7,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.1"
+                },
+                {
+                  "name": "",
+                  "version": "7.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_Message_broker",
+              "name": "Message broker",
+              "type": "Message broker",
+              "count": 4,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_Web_server",
+              "name": "Web server",
+              "type": "Web server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_AIX_OS",
+              "name": "AIX OS",
+              "type": "AIX OS",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_development_SDK",
+              "name": "development SDK",
+              "type": "development SDK",
+              "count": 24,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                }
+              ]
+            },
+            {
+              "id": "bbciga51_IBM_Application_server",
+              "name": "IBM Application server",
+              "type": "IBM Application server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8.5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bbciga52",
+          "name": "bbciga52",
+          "cpu": 1.0,
+          "memory": 10.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": [
+            {
+              "id": "bbciga52_License_tool",
+              "name": "License tool",
+              "type": "License tool",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "9.2"
+                },
+                {
+                  "name": "",
+                  "version": "7.2"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.1"
+                },
+                {
+                  "name": "",
+                  "version": "7.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_Message_broker",
+              "name": "Message broker",
+              "type": "Message broker",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_Tivoli_monitoring",
+              "name": "Tivoli monitoring",
+              "type": "Tivoli monitoring",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_AIX_OS",
+              "name": "AIX OS",
+              "type": "AIX OS",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_development_SDK",
+              "name": "development SDK",
+              "type": "development SDK",
+              "count": 20,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.2"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                },
+                {
+                  "name": "",
+                  "version": "6.3"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_IBM_Application_server",
+              "name": "IBM Application server",
+              "type": "IBM Application server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8.5"
+                }
+              ]
+            },
+            {
+              "id": "bbciga52_SDK_software_developer_kit",
+              "name": "SDK software developer kit",
+              "type": "SDK software developer kit",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bbciga53_Migrated",
+          "name": "bbciga53_Migrated",
+          "cpu": 0.0,
+          "memory": 60.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "bbcisa4",
+          "name": "bbcisa4",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": [
+            {
+              "id": "bbcisa4_Message_broker_client",
+              "name": "Message broker client",
+              "type": "Message broker client",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.5"
+                }
+              ]
+            },
+            {
+              "id": "bbcisa4_Message_broker",
+              "name": "Message broker",
+              "type": "Message broker",
+              "count": 4,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.5"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                },
+                {
+                  "name": "",
+                  "version": "7.5"
+                },
+                {
+                  "name": "",
+                  "version": "8"
+                }
+              ]
+            },
+            {
+              "id": "bbcisa4_License_tool",
+              "name": "License tool",
+              "type": "License tool",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "9.2"
+                },
+                {
+                  "name": "",
+                  "version": "7.2"
+                }
+              ]
+            },
+            {
+              "id": "bbcisa4_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.1"
+                },
+                {
+                  "name": "",
+                  "version": "7.1"
+                }
+              ]
+            },
+            {
+              "id": "bbcisa4_Tivoli_monitoring",
+              "name": "Tivoli monitoring",
+              "type": "Tivoli monitoring",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.2"
+                }
+              ]
+            },
+            {
+              "id": "bbcisa4_IBM_Application_server",
+              "name": "IBM Application server",
+              "type": "IBM Application server",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "8.5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bbctma1",
+          "name": "bbctma1",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bgmt001",
+          "name": "bgmt001",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "poc",
+          "name": "poc",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbiiqaa1a",
+          "name": "bbiiqaa1a",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbiipaa1a",
+          "name": "bbiipaa1a",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "dbcnim02",
+          "name": "dbcnim02",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "dbcnim03",
+          "name": "dbcnim03",
+          "cpu": 1.0,
+          "memory": 6.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "BOI_CAB_PRD_E870_2",
+      "name": "BOI-CAB-PRD-E870-2",
+      "model": "BOI CAB",
+      "serial": "108325D",
+      "totalCPU": 48.0,
+      "totalMemory": 463.0,
+      "lpars": [
+        {
+          "id": "INM90X1",
+          "name": "INM90X1",
+          "cpu": 2.0,
+          "memory": 7.0,
+          "os": "AIX 7.3 7300-02-02-2420",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa4",
+          "name": "bbmsaspgwa4",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa3",
+          "name": "bbmsaspgwa3",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa2",
+          "name": "bbmsaspgwa2",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa1",
+          "name": "bbmsaspgwa1",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgma1",
+          "name": "bbmsaspgma1",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmta2",
+          "name": "bbmsaspmta2",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmta1",
+          "name": "bbmsaspmta1",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmda3",
+          "name": "bbmsaspmda3",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmda2",
+          "name": "bbmsaspmda2",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmda1",
+          "name": "bbmsaspmda1",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbcpvio3b",
+          "name": "bbcpvio3b",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbcpvio3a",
+          "name": "bbcpvio3a",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbcpvio2b",
+          "name": "bbcpvio2b",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbcpvio2a",
+          "name": "bbcpvio2a",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bpopaa2",
+          "name": "bpopaa2",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bpopaa4",
+          "name": "bpopaa4",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbbztda1",
+          "name": "bbbztda1",
+          "cpu": 0.0,
+          "memory": 48.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbppaa4",
+          "name": "bbppaa4",
+          "cpu": 2.0,
+          "memory": 24.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "bbppda2b",
+          "name": "bbppda2b",
+          "cpu": 3.0,
+          "memory": 48.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "becpaa3",
+          "name": "becpaa3",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "becpda2per",
+          "name": "becpda2per",
+          "cpu": 4.0,
+          "memory": 48.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "becpsa2per",
+          "name": "becpsa2per",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "beppaa3",
+          "name": "beppaa3",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bpbopda1b",
+          "name": "bpbopda1b",
+          "cpu": 2.0,
+          "memory": 30.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bsfgpda2ba",
+          "name": "bsfgpda2ba",
+          "cpu": 3.0,
+          "memory": 30.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "bswpda1fa",
+          "name": "bswpda1fa",
+          "cpu": 4.0,
+          "memory": 32.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "a5461c001",
+          "name": "a5461c001",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "ITDS90X1",
+          "name": "ITDS90X1",
+          "cpu": 2.0,
+          "memory": 6.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "botpda2per",
+          "name": "botpda2per",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 6.1 6100-09-06-1543",
+          "apps": []
+        },
+        {
+          "id": "botpwa2",
+          "name": "botpwa2",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 6.1 6100-09-06-1543",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "BOI_CAB_PRE_E870_2",
+      "name": "BOI-CAB-PRE-E870-2",
+      "model": "BOI CAB",
+      "serial": "061F107",
+      "totalCPU": 60.0,
+      "totalMemory": 980.0,
+      "lpars": [
+        {
+          "id": "bbciga7",
+          "name": "bbciga7",
+          "cpu": 4.0,
+          "memory": 160.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": [
+            {
+              "id": "bbciga7_License_tool",
+              "name": "License tool",
+              "type": "License tool",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "9.2"
+                },
+                {
+                  "name": "",
+                  "version": "7.2"
+                }
+              ]
+            },
+            {
+              "id": "bbciga7_Storage_server",
+              "name": "Storage server",
+              "type": "Storage server",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "7.1"
+                },
+                {
+                  "name": "",
+                  "version": "7.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga7_Tivoli_monitoring",
+              "name": "Tivoli monitoring",
+              "type": "Tivoli monitoring",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.2"
+                }
+              ]
+            },
+            {
+              "id": "bbciga7_AIX_OS",
+              "name": "AIX OS",
+              "type": "AIX OS",
+              "count": 1,
+              "items": [
+                {
+                  "name": "",
+                  "version": "6.1"
+                }
+              ]
+            },
+            {
+              "id": "bbciga7_SDK_software_developer_kit",
+              "name": "SDK software developer kit",
+              "type": "SDK software developer kit",
+              "count": 2,
+              "items": [
+                {
+                  "name": "",
+                  "version": "5"
+                },
+                {
+                  "name": "",
+                  "version": "5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bbcuga7",
+          "name": "bbcuga7",
+          "cpu": 4.0,
+          "memory": 160.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bestaa15",
+          "name": "bestaa15",
+          "cpu": 8.0,
+          "memory": 160.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbbotda1",
+          "name": "bbbotda1",
+          "cpu": 0.0,
+          "memory": 48.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbpdda2",
+          "name": "bbpdda2",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbpnda2",
+          "name": "bbpnda2",
+          "cpu": 1.0,
+          "memory": 16.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbptaa4",
+          "name": "bbptaa4",
+          "cpu": 2.0,
+          "memory": 24.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbptda2b",
+          "name": "bbptda2b",
+          "cpu": 3.0,
+          "memory": 48.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bectaa3",
+          "name": "bectaa3",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bectda2per",
+          "name": "bectda2per",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bectsa2per",
+          "name": "bectsa2per",
+          "cpu": 2.0,
+          "memory": 24.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "beptaa3",
+          "name": "beptaa3",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bpooaa2",
+          "name": "bpooaa2",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bpotaa2",
+          "name": "bpotaa2",
+          "cpu": 2.0,
+          "memory": 6.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bsfgqda2ba",
+          "name": "bsfgqda2ba",
+          "cpu": 3.0,
+          "memory": 30.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "dbcnim05",
+          "name": "dbcnim05",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bswqda1fa",
+          "name": "bswqda1fa",
+          "cpu": 4.0,
+          "memory": 32.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "btsmaa1",
+          "name": "btsmaa1",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bt2cqda1ba",
+          "name": "bt2cqda1ba",
+          "cpu": 0.0,
+          "memory": 16.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bbcqvio2b",
+          "name": "bbcqvio2b",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbcqvio2a",
+          "name": "bbcqvio2a",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbciga53",
+          "name": "bbciga53",
+          "cpu": 4.0,
+          "memory": 60.0,
+          "os": "AIX 7.3 7300-02-02-2420",
+          "apps": []
+        },
+        {
+          "id": "a59c0e001",
+          "name": "a59c0e001",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bpbotda1b",
+          "name": "bpbotda1b",
+          "cpu": 3.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "BOI_MUL_PRE_E870_2",
+      "name": "BOI-MUL-PRE-E870-2",
+      "model": "BOI MUL",
+      "serial": "65CCCDC",
+      "totalCPU": 59.0,
+      "totalMemory": 748.0,
+      "lpars": [
+        {
+          "id": "bbctga7",
+          "name": "bbctga7",
+          "cpu": 4.0,
+          "memory": 200.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbcuma1",
+          "name": "bbcuma1",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbcdga1",
+          "name": "bbcdga1",
+          "cpu": 2.0,
+          "memory": 60.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbpsda2",
+          "name": "bbpsda2",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbptaa3",
+          "name": "bbptaa3",
+          "cpu": 2.0,
+          "memory": 24.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbptda2a",
+          "name": "bbptda2a",
+          "cpu": 3.0,
+          "memory": 48.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bectaa2",
+          "name": "bectaa2",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bectda1per",
+          "name": "bectda1per",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bectsa1per",
+          "name": "bectsa1per",
+          "cpu": 2.0,
+          "memory": 24.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "beptaa2",
+          "name": "beptaa2",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bpooaa1",
+          "name": "bpooaa1",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bsfgqda2aa",
+          "name": "bsfgqda2aa",
+          "cpu": 3.0,
+          "memory": 30.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bswqda1ea",
+          "name": "bswqda1ea",
+          "cpu": 4.0,
+          "memory": 32.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "ace3b5001",
+          "name": "ace3b5001",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bbcqda11",
+          "name": "bbcqda11",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bt2cqda1aa",
+          "name": "bt2cqda1aa",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bbbtda1",
+          "name": "bbbtda1",
+          "cpu": 4.0,
+          "memory": 32.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bbmqvio2b",
+          "name": "bbmqvio2b",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbmqvio2a",
+          "name": "bbmqvio2a",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bellxkyn",
+          "name": "bellxkyn",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.3 7300-02-02-2420",
+          "apps": []
+        },
+        {
+          "id": "bbcttsm2",
+          "name": "bbcttsm2",
+          "cpu": 4.0,
+          "memory": 32.0,
+          "os": "AIX 7.3 7300-02-02-2420",
+          "apps": []
+        },
+        {
+          "id": "bottda1",
+          "name": "bottda1",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 6.1 6100-09-06-1543",
+          "apps": []
+        },
+        {
+          "id": "bottwa1",
+          "name": "bottwa1",
+          "cpu": 2.0,
+          "memory": 6.0,
+          "os": "AIX 6.1 6100-09-06-1543",
+          "apps": []
+        },
+        {
+          "id": "bpbotda1a",
+          "name": "bpbotda1a",
+          "cpu": 3.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "BOI_MUL_PRD_E870_2",
+      "name": "BOI-MUL-PRD-E870-2",
+      "model": "BOI MUL",
+      "serial": "650E98D",
+      "totalCPU": 87.0,
+      "totalMemory": 1046.0,
+      "lpars": [
+        {
+          "id": "bstpda1",
+          "name": "bstpda1",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bpopaa1",
+          "name": "bpopaa1",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "bpopaa3",
+          "name": "bpopaa3",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbbytda1",
+          "name": "bbbytda1",
+          "cpu": 0.0,
+          "memory": 48.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgma1",
+          "name": "bbmsaspgma1",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa1",
+          "name": "bbmsaspgwa1",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa2",
+          "name": "bbmsaspgwa2",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa3",
+          "name": "bbmsaspgwa3",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspgwa4",
+          "name": "bbmsaspgwa4",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmda1",
+          "name": "bbmsaspmda1",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmda2",
+          "name": "bbmsaspmda2",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmda3",
+          "name": "bbmsaspmda3",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmta1",
+          "name": "bbmsaspmta1",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbmsaspmta2",
+          "name": "bbmsaspmta2",
+          "cpu": 4.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbppaa3",
+          "name": "bbppaa3",
+          "cpu": 2.0,
+          "memory": 24.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "bbppda2a",
+          "name": "bbppda2a",
+          "cpu": 3.0,
+          "memory": 48.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "becpaa2",
+          "name": "becpaa2",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "becpda1per",
+          "name": "becpda1per",
+          "cpu": 4.0,
+          "memory": 48.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "becpsa1per",
+          "name": "becpsa1per",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbmpvio3b",
+          "name": "bbmpvio3b",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbmpvio3a",
+          "name": "bbmpvio3a",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "INM45X1",
+          "name": "INM45X1",
+          "cpu": 2.0,
+          "memory": 6.0,
+          "os": "AIX 7.3 7300-02-02-2420",
+          "apps": []
+        },
+        {
+          "id": "bbmpvio2b",
+          "name": "bbmpvio2b",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "bbmpvio2a",
+          "name": "bbmpvio2a",
+          "cpu": 2.0,
+          "memory": 12.0,
+          "os": "VIOS 2.2.6.51",
+          "apps": []
+        },
+        {
+          "id": "beppaa2",
+          "name": "beppaa2",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "beppaa4",
+          "name": "beppaa4",
+          "cpu": 2.0,
+          "memory": 32.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bpbopda1a",
+          "name": "bpbopda1a",
+          "cpu": 3.0,
+          "memory": 30.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bsfgpda2aa",
+          "name": "bsfgpda2aa",
+          "cpu": 3.0,
+          "memory": 30.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "bswpda1ea",
+          "name": "bswpda1ea",
+          "cpu": 4.0,
+          "memory": 32.0,
+          "os": "AIX 7.2 7200-05-08-2420",
+          "apps": []
+        },
+        {
+          "id": "ada81d001",
+          "name": "ada81d001",
+          "cpu": 4.0,
+          "memory": 6.0,
+          "os": "AIX 7.2 7200-05-07-2346",
+          "apps": []
+        },
+        {
+          "id": "ITDS45X1",
+          "name": "ITDS45X1",
+          "cpu": 2.0,
+          "memory": 6.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "botpda1per",
+          "name": "botpda1per",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 6.1 6100-09-06-1543",
+          "apps": []
+        },
+        {
+          "id": "botpwa1",
+          "name": "botpwa1",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "AIX 6.1 6100-09-06-1543",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMD_SN10F65EE_MUL3",
+      "name": "p770-9117-MMD-SN10F65EE-MUL3",
+      "model": "p770 9117",
+      "serial": "10F65EE",
+      "totalCPU": 0.0,
+      "totalMemory": 0.0,
+      "lpars": [
+        {
+          "id": "bamlpaa1a",
+          "name": "bamlpaa1a",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbiipaa1a",
+          "name": "bbiipaa1a",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bpdbpaa1a",
+          "name": "bpdbpaa1a",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMD_SN109203E_MUL4",
+      "name": "p770-9117-MMD-SN109203E-MUL4",
+      "model": "p770 9117",
+      "serial": "109203E",
+      "totalCPU": 0.0,
+      "totalMemory": 0.0,
+      "lpars": [
+        {
+          "id": "bamlpaa1b",
+          "name": "bamlpaa1b",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bbiipaa1b",
+          "name": "bbiipaa1b",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "BOI_MUL_PROD_S924_1",
+      "name": "BOI-MUL-PROD-S924-1",
+      "model": "BOI MUL",
+      "serial": "218B0CW",
+      "totalCPU": 11.0,
+      "totalMemory": 108.0,
+      "lpars": [
+        {
+          "id": "bbmpvio4b",
+          "name": "bbmpvio4b",
+          "cpu": 1.0,
+          "memory": 8.0,
+          "os": "VIOS 3.1.4.31",
+          "apps": []
+        },
+        {
+          "id": "bbmpvio4a",
+          "name": "bbmpvio4a",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "VIOS 3.1.4.41",
+          "apps": []
+        },
+        {
+          "id": "BBNILIVE",
+          "name": "BBNILIVE",
+          "cpu": 1.0,
+          "memory": 8.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "GMPROD",
+          "name": "GMPROD",
+          "cpu": 1.0,
+          "memory": 16.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "ICSB60",
+          "name": "ICSB60",
+          "cpu": 2.0,
+          "memory": 40.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCNIPRD9",
+          "name": "POCNIPRD9",
+          "cpu": 1.0,
+          "memory": 4.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCROIPRD9",
+          "name": "POCROIPRD9",
+          "cpu": 1.0,
+          "memory": 4.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCB609",
+          "name": "POCB609",
+          "cpu": 1.0,
+          "memory": 8.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCLIFEPROD",
+          "name": "POCLIFEPROD",
+          "cpu": 1.0,
+          "memory": 12.0,
+          "os": "OS/400 V7R2M0 410 9",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "BOI_CAB_DEV_DR_S924_1",
+      "name": "BOI-CAB-DEV-DR-S924-1",
+      "model": "BOI CAB",
+      "serial": "21504EV",
+      "totalCPU": 13.0,
+      "totalMemory": 169.0,
+      "lpars": [
+        {
+          "id": "TMBDR",
+          "name": "TMBDR",
+          "cpu": 0.0,
+          "memory": 40.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "GMDR",
+          "name": "GMDR",
+          "cpu": 0.0,
+          "memory": 16.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "BBNIDR",
+          "name": "BBNIDR",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "ICSDEV",
+          "name": "ICSDEV",
+          "cpu": 1.0,
+          "memory": 10.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "GMDEVP1",
+          "name": "GMDEVP1",
+          "cpu": 1.0,
+          "memory": 10.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "BBNIDVP6",
+          "name": "BBNIDVP6",
+          "cpu": 1.0,
+          "memory": 8.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCTMBDEV9",
+          "name": "POCTMBDEV9",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCROIDEV9",
+          "name": "POCROIDEV9",
+          "cpu": 0.0,
+          "memory": 4.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "POCNIDEV9",
+          "name": "POCNIDEV9",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "OS/400 V7R4M0 48 9",
+          "apps": []
+        },
+        {
+          "id": "bbcrvio4b",
+          "name": "bbcrvio4b",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "VIOS 3.1.4.41",
+          "apps": []
+        },
+        {
+          "id": "bbcrvio4a",
+          "name": "bbcrvio4a",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "VIOS 3.1.4.41",
+          "apps": []
+        },
+        {
+          "id": "bbcqvio4b",
+          "name": "bbcqvio4b",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "VIOS 3.1.4.41",
+          "apps": []
+        },
+        {
+          "id": "bbcqvio4a",
+          "name": "bbcqvio4a",
+          "cpu": 2.0,
+          "memory": 8.0,
+          "os": "VIOS 3.1.4.41",
+          "apps": []
+        },
+        {
+          "id": "POCBILDV",
+          "name": "POCBILDV",
+          "cpu": 2.0,
+          "memory": 25.0,
+          "os": "OS/400 V7R2M0 410 9",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMB_SN65DA81D_MUL1",
+      "name": "p770-9117-MMB-SN65DA81D-MUL1",
+      "model": "p770 9117",
+      "serial": "65DA81D",
+      "totalCPU": 8.0,
+      "totalMemory": 56.0,
+      "lpars": [
+        {
+          "id": "bespaa1a",
+          "name": "bespaa1a",
+          "cpu": 4.0,
+          "memory": 24.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbiipaa1b",
+          "name": "bbiipaa1b",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "berpda3",
+          "name": "berpda3",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMB_SN655461C_MUL2",
+      "name": "p770-9117-MMB-SN655461C-MUL2",
+      "model": "p770 9117",
+      "serial": "655461C",
+      "totalCPU": 12.0,
+      "totalMemory": 256.0,
+      "lpars": [
+        {
+          "id": "bespaa1b",
+          "name": "bespaa1b",
+          "cpu": 0.0,
+          "memory": 24.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "berpaa2b",
+          "name": "berpaa2b",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "berpda4",
+          "name": "berpda4",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "MIGRATED",
+          "name": "MIGRATED",
+          "cpu": 0.0,
+          "memory": 60.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bespda4b",
+          "name": "bespda4b",
+          "cpu": 0.0,
+          "memory": 4.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bespda3b",
+          "name": "bespda3b",
+          "cpu": 0.0,
+          "memory": 48.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "a5461c001_Migrated_e870",
+          "name": "a5461c001_Migrated_e870",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bespda2b",
+          "name": "bespda2b",
+          "cpu": 0.0,
+          "memory": 48.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bespda1b",
+          "name": "bespda1b",
+          "cpu": 0.0,
+          "memory": 24.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "boipva25",
+          "name": "boipva25",
+          "cpu": 2.0,
+          "memory": 4.0,
+          "os": "VIOS 2.2.6.51 6100-09-08-1642",
+          "apps": []
+        },
+        {
+          "id": "boipva24",
+          "name": "boipva24",
+          "cpu": 2.0,
+          "memory": 4.0,
+          "os": "VIOS 2.2.6.51 6100-09-08-1642",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMB_SN65CE3B5_CAB1",
+      "name": "p770-9117-MMB-SN65CE3B5-CAB1",
+      "model": "p770 9117",
+      "serial": "65CE3B5",
+      "totalCPU": 16.0,
+      "totalMemory": 324.0,
+      "lpars": [
+        {
+          "id": "besqaa1a",
+          "name": "besqaa1a",
+          "cpu": 4.0,
+          "memory": 24.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbiqpda1a",
+          "name": "bbiqpda1a",
+          "cpu": 0.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "beroaa2",
+          "name": "beroaa2",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "beroda1",
+          "name": "beroda1",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bifrtda1",
+          "name": "bifrtda1",
+          "cpu": 2.0,
+          "memory": 128.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bifstda1",
+          "name": "bifstda1",
+          "cpu": 2.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "boitna2",
+          "name": "boitna2",
+          "cpu": 4.0,
+          "memory": 12.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        }
+      ]
+    },
+    {
+      "id": "p770_9117_MMB_SN6559C0E_CAB2",
+      "name": "p770-9117-MMB-SN6559C0E-CAB2",
+      "model": "p770 9117",
+      "serial": "6559C0E",
+      "totalCPU": 14.0,
+      "totalMemory": 312.0,
+      "lpars": [
+        {
+          "id": "besqaa1b",
+          "name": "besqaa1b",
+          "cpu": 4.0,
+          "memory": 24.0,
+          "os": "AIX 6.1 6100-09-12-1846",
+          "apps": []
+        },
+        {
+          "id": "bbiqpda1b",
+          "name": "bbiqpda1b",
+          "cpu": 0.0,
+          "memory": 64.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "beroaa1",
+          "name": "beroaa1",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "beroda2",
+          "name": "beroda2",
+          "cpu": 2.0,
+          "memory": 16.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "bifstda2",
+          "name": "bifstda2",
+          "cpu": 2.0,
+          "memory": 128.0,
+          "os": "AIX 7.1 7100-05-11-2246",
+          "apps": []
+        },
+        {
+          "id": "a59c0e001",
+          "name": "a59c0e001",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bespaa1b",
+          "name": "bespaa1b",
+          "cpu": 0.0,
+          "memory": 24.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bsaspma2",
+          "name": "bsaspma2",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "berpda4",
+          "name": "berpda4",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "a5461c001",
+          "name": "a5461c001",
+          "cpu": 0.0,
+          "memory": 8.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bemlpaa1b",
+          "name": "bemlpaa1b",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bemlpda1b",
+          "name": "bemlpda1b",
+          "cpu": 0.0,
+          "memory": 16.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "berpaa2b",
+          "name": "berpaa2b",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        },
+        {
+          "id": "bbcrva25",
+          "name": "bbcrva25",
+          "cpu": 2.0,
+          "memory": 4.0,
+          "os": "VIOS 2.2.6.51 6100-09-08-1642",
+          "apps": []
+        },
+        {
+          "id": "bbcrva24",
+          "name": "bbcrva24",
+          "cpu": 2.0,
+          "memory": 4.0,
+          "os": "VIOS 2.2.6.51 6100-09-08-1642",
+          "apps": []
+        },
+        {
+          "id": "bbppda1b",
+          "name": "bbppda1b",
+          "cpu": 0.0,
+          "memory": 0.0,
+          "os": "Unknown",
+          "apps": []
+        }
+      ]
+    }
+  ]
+}

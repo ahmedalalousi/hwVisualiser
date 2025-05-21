@@ -1,0 +1,223 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+PlantUML to JSON Converter
+
+This script parses a PlantUML hardware inventory diagram and converts it to JSON format
+that can be used by the visualization HTML page.
+
+Usage:
+    python puml_to_json.py --input <input_file> --output <output_file>
+
+Arguments:
+    --input     Input PlantUML file
+    --output    Output JSON file
+"""
+
+import argparse
+import json
+import re
+import os
+from pathlib import Path
+
+def clean_id(text):
+    """
+    Convert a text string to a valid identifier by removing special characters
+    and replacing spaces with underscores.
+    """
+    if not text:
+        return "unknown"
+    # Replace spaces and special characters
+    clean = re.sub(r'[^a-zA-Z0-9]', '_', str(text))
+    # Ensure it doesn't start with a number
+    if clean and clean[0].isdigit():
+        clean = 'id_' + clean
+    return clean
+
+def parse_plantuml(puml_file):
+    """
+    Parse a PlantUML file and extract the hierarchical structure.
+    Returns a JSON-compatible dictionary with chassis, LPARs, and applications.
+    """
+    print(f"Parsing PlantUML file: {puml_file}")
+    
+    # Initialize the data structure
+    data = {
+        "chassis": []
+    }
+    
+    # Track the current position in the hierarchy
+    current_chassis = None
+    current_lpar = None
+    current_app_group = None
+    
+    try:
+        with open(puml_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                
+                # Skip empty lines, comments, and diagram markers
+                if not line or line.startswith("'") or line == "@startuml" or line == "@enduml" or line.startswith("title") or line.startswith("skinparam"):
+                    continue
+                
+                # Match chassis rectangle
+                chassis_match = re.search(r'rectangle\s+"([^"]+)\\n[^"]*\\nSerial:\s+([^\\]+)\\nTotal CPU:\s+([^\\]+)\\nTotal Memory:\s+([^\\]+)[^"]*"\s+as\s+(\w+)\s+<<Chassis>>', line)
+                if chassis_match:
+                    chassis_name, chassis_serial, total_cpu, total_memory, chassis_id = chassis_match.groups()
+                    
+                    # Extract model from chassis name
+                    model_match = re.search(r'\\nModel:\s+([^\\]+)', line)
+                    model = model_match.group(1) if model_match else "Unknown"
+                    
+                    try:
+                        total_cpu = float(total_cpu)
+                    except ValueError:
+                        total_cpu = 0.0
+                        
+                    try:
+                        total_memory = float(total_memory.split()[0])  # Remove 'GB' suffix
+                    except ValueError:
+                        total_memory = 0.0
+                    
+                    current_chassis = {
+                        "id": chassis_id,
+                        "name": chassis_name,
+                        "model": model,
+                        "serial": chassis_serial,
+                        "totalCPU": total_cpu,
+                        "totalMemory": total_memory,
+                        "lpars": []
+                    }
+                    
+                    data["chassis"].append(current_chassis)
+                    continue
+                
+                # Match LPAR rectangle (only if we're inside a chassis)
+                if current_chassis is not None:
+                    lpar_match = re.search(r'rectangle\s+"([^"]+)\\nCPU:\s+([^\\]+)\\nMemory:\s+([^\\]+)\\nOS:\s+([^"]+)"\s+as\s+(\w+)\s+<<LPAR>>', line)
+                    if lpar_match:
+                        lpar_name, lpar_cpu, lpar_memory, lpar_os, lpar_id = lpar_match.groups()
+                        
+                        try:
+                            lpar_cpu = float(lpar_cpu)
+                        except ValueError:
+                            lpar_cpu = 0.0
+                            
+                        try:
+                            lpar_memory = float(lpar_memory.split()[0])  # Remove 'GB' suffix
+                        except ValueError:
+                            lpar_memory = 0.0
+                        
+                        current_lpar = {
+                            "id": lpar_id,
+                            "name": lpar_name,
+                            "cpu": lpar_cpu,
+                            "memory": lpar_memory,
+                            "os": lpar_os,
+                            "apps": []
+                        }
+                        
+                        current_chassis["lpars"].append(current_lpar)
+                        continue
+                
+                # Match app package group (only if we're inside an LPAR)
+                if current_lpar is not None:
+                    app_group_match = re.search(r'package\s+"([^"]+)\s+\((\d+)\)"\s+as\s+(\w+)', line)
+                    if app_group_match:
+                        app_group_name, app_count, app_group_id = app_group_match.groups()
+                        
+                        current_app_group = {
+                            "id": app_group_id,
+                            "name": app_group_name,
+                            "type": app_group_name,
+                            "count": int(app_count),
+                            "items": []
+                        }
+                        
+                        current_lpar["apps"].append(current_app_group)
+                        continue
+                
+                # Match app component (only if we're inside an app group)
+                if current_app_group is not None:
+                    app_match = re.search(r'component\s+"([^"]+)"\s+as\s+(\w+)', line)
+                    if app_match:
+                        app_name, app_id = app_match.groups()
+                        
+                        # Parse version if present (format: " vX.Y")
+                        version_match = re.search(r'v(\d+(?:\.\d+)?)', app_name)
+                        version = version_match.group(1) if version_match else ""
+                        
+                        # Clean the name (remove version)
+                        clean_name = app_name
+                        if version:
+                            clean_name = app_name.replace(f" v{version}", "")
+                        
+                        app_item = {
+                            "name": clean_name.strip(),
+                            "version": version
+                        }
+                        
+                        current_app_group["items"].append(app_item)
+                        continue
+                
+                # Handle closing braces to navigate up the hierarchy
+                if line == "}":
+                    # Check which level we're at
+                    if current_app_group is not None:
+                        current_app_group = None
+                    elif current_lpar is not None:
+                        current_lpar = None
+                    elif current_chassis is not None:
+                        current_chassis = None
+        
+        return data
+    
+    except Exception as e:
+        print(f"Error parsing PlantUML file: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+def main():
+    parser = argparse.ArgumentParser(description='Convert PlantUML hardware inventory to JSON')
+    parser.add_argument('--input', required=True, help='Input PlantUML file')
+    parser.add_argument('--output', required=True, help='Output JSON file')
+    
+    args = parser.parse_args()
+    
+    # Check if input file exists
+    if not os.path.exists(args.input):
+        print(f"Error: Input file '{args.input}' does not exist.")
+        return 1
+    
+    # Create output directory if it doesn't exist
+    output_dir = os.path.dirname(args.output)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    # Parse PlantUML file
+    data = parse_plantuml(args.input)
+    
+    if data:
+        # Write JSON output
+        with open(args.output, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2)
+        
+        print(f"Successfully converted PlantUML to JSON: {args.output}")
+        
+        # Print some statistics
+        chassis_count = len(data["chassis"])
+        lpar_count = sum(len(chassis["lpars"]) for chassis in data["chassis"])
+        app_group_count = sum(
+            sum(len(lpar["apps"]) for lpar in chassis["lpars"])
+            for chassis in data["chassis"]
+        )
+        
+        print(f"Extracted {chassis_count} chassis, {lpar_count} LPARs, and {app_group_count} application groups.")
+        return 0
+    else:
+        print("Failed to parse PlantUML file.")
+        return 1
+
+if __name__ == "__main__":
+    exit(main())

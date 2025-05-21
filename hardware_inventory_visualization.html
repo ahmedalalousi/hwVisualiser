@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Inventory Visualisation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        #visualisation {
+            width: 100%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+            text-align: center;
+        }
+        .chassis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .chassis-box {
+            background-color: #e0f7fa;
+            border: 1px solid #b2ebf2;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .chassis-box:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .chassis-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #0277bd;
+        }
+        .chassis-details {
+            font-size: 14px;
+            color: #546e7a;
+            margin-bottom: 3px;
+        }
+        .lpar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        .lpar-box {
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+        }
+        .lpar-box:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .lpar-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #2e7d32;
+        }
+        .lpar-details {
+            font-size: 12px;
+            color: #546e7a;
+            margin-bottom: 2px;
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .app-box {
+            background-color: #fff8e1;
+            border: 1px solid #ffecb3;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .app-title {
+            font-weight: bold;
+            font-size: 13px;
+            color: #ff8f00;
+            margin-bottom: 4px;
+        }
+        .app-type {
+            font-size: 12px;
+            color: #bf360c;
+            margin-bottom: 2px;
+        }
+        .breadcrumb {
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .breadcrumb span {
+            color: #0277bd;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .breadcrumb span:hover {
+            text-decoration: underline;
+        }
+        .back-button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .back-button:hover {
+            background-color: #d0d0d0;
+        }
+        .summary {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .summary-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .summary-stat {
+            display: inline-block;
+            margin-right: 15px;
+            color: #555;
+        }
+        .empty-message {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .stat-box {
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 12px;
+            color: #555;
+        }
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="visualisation">
+        <h1>Hardware Inventory Visualisation</h1>
+        <div id="breadcrumb" class="breadcrumb">
+            <span data-level="chassis">Systems Overview</span>
+        </div>
+        <button id="back-button" class="back-button">← Back</button>
+        <div id="summary" class="summary"></div>
+        <div id="loading" class="spinner"></div>
+        <div id="content"></div>
+    </div>
+
+    <script>
+        // DOM elements
+        const content = document.getElementById('content');
+        const breadcrumb = document.getElementById('breadcrumb');
+        const backButton = document.getElementById('back-button');
+        const summaryDiv = document.getElementById('summary');
+        const loadingSpinner = document.getElementById('loading');
+
+        // State
+        let currentLevel = 'chassis';  // chassis, lpar, app
+        let currentChassisId = null;
+        let currentLparId = null;
+        let data = null;
+        
+        // Helper function to sanitize IDs for HTML
+        function sanitizeId(id) {
+            return id.replace(/[^a-zA-Z0-9]/g, '_');
+        }
+        
+        // Function to parse PlantUML file
+        async function parseData() {
+            try {
+                // This section will be replaced with actual data by the Python script
+                // DO NOT MODIFY THIS COMMENT - it's used as a marker for data injection
+                const mockData = {
+                    chassis: []
+                };
+                
+                return mockData;
+            } catch (error) {
+                console.error("Error loading data:", error);
+                return null;
+            }
+        }
+        
+        // Render chassis overview
+        function renderChassisList(chassisData) {
+            // Calculate summary statistics
+            const totalChassis = chassisData.length;
+            let totalLPARs = 0;
+            let totalApps = 0;
+            let totalCPU = 0;
+            let totalMemory = 0;
+            
+            chassisData.forEach(chassis => {
+                totalLPARs += chassis.lpars.length;
+                totalCPU += chassis.totalCPU || 0;
+                totalMemory += chassis.totalMemory || 0;
+                
+                chassis.lpars.forEach(lpar => {
+                    totalApps += lpar.apps ? lpar.apps.length : 0;
+                });
+            });
+            
+            // Update summary
+            summaryDiv.innerHTML = `
+                <div class="summary-title">Overall System Summary</div>
+                <div class="stats-container">
+                    <div class="stat-box">Chassis: ${totalChassis}</div>
+                    <div class="stat-box">LPARs: ${totalLPARs}</div>
+                    <div class="stat-box">Applications: ${totalApps}</div>
+                    <div class="stat-box">Total CPU: ${totalCPU.toFixed(1)}</div>
+                    <div class="stat-box">Total Memory: ${totalMemory.toFixed(1)} GB</div>
+                </div>
+            `;
+            
+            // Create chassis grid
+            const chassisGrid = document.createElement('div');
+            chassisGrid.className = 'chassis-grid';
+            
+            chassisData.forEach(chassis => {
+                const chassisBox = document.createElement('div');
+                chassisBox.className = 'chassis-box';
+                chassisBox.setAttribute('data-id', chassis.id);
+                
+                // Count total apps in this chassis
+                let chassisAppsCount = 0;
+                chassis.lpars.forEach(lpar => {
+                    chassisAppsCount += lpar.apps ? lpar.apps.length : 0;
+                });
+                
+                chassisBox.innerHTML = `
+                    <div class="chassis-title">${chassis.name}</div>
+                    <div class="chassis-details">Model: ${chassis.model}</div>
+                    <div class="chassis-details">Serial: ${chassis.serial}</div>
+                    <div class="chassis-details">CPU: ${chassis.totalCPU.toFixed(1)}</div>
+                    <div class="chassis-details">Memory: ${chassis.totalMemory.toFixed(1)} GB</div>
+                    <div class="chassis-details">LPARs: ${chassis.lpars.length}</div>
+                    <div class="chassis-details">Apps: ${chassisAppsCount}</div>
+                `;
+                
+                // Add click event
+                chassisBox.addEventListener('click', () => {
+                    currentChassisId = chassis.id;
+                    currentLevel = 'lpar';
+                    updateView();
+                });
+                
+                chassisGrid.appendChild(chassisBox);
+            });
+            
+            content.innerHTML = '';
+            content.appendChild(chassisGrid);
+        }
+        
+        // Render LPAR list for a specific chassis
+        function renderLparList(chassisId) {
+            const chassis = data.chassis.find(c => c.id === chassisId);
+            if (!chassis) return;
+            
+            // Calculate summary statistics for this chassis
+            const totalLPARs = chassis.lpars.length;
+            let totalApps = 0;
+            let usedCPU = 0;
+            let usedMemory = 0;
+            
+            chassis.lpars.forEach(lpar => {
+                totalApps += lpar.apps ? lpar.apps.length : 0;
+                usedCPU += lpar.cpu || 0;
+                usedMemory += lpar.memory || 0;
+            });
+            
+            // Update summary
+            summaryDiv.innerHTML = `
+                <div class="summary-title">${chassis.name}</div>
+                <div class="stats-container">
+                    <div class="stat-box">Model: ${chassis.model}</div>
+                    <div class="stat-box">Serial: ${chassis.serial}</div>
+                    <div class="stat-box">Total CPU: ${chassis.totalCPU.toFixed(1)}</div>
+                    <div class="stat-box">Used CPU: ${usedCPU.toFixed(1)}</div>
+                    <div class="stat-box">Total Memory: ${chassis.totalMemory.toFixed(1)} GB</div>
+                    <div class="stat-box">Used Memory: ${usedMemory.toFixed(1)} GB</div>
+                    <div class="stat-box">LPARs: ${totalLPARs}</div>
+                    <div class="stat-box">Apps: ${totalApps}</div>
+                </div>
+            `;
+            
+            // Create LPAR grid
+            const lparGrid = document.createElement('div');
+            lparGrid.className = 'lpar-grid';
+            lparGrid.style.display = 'grid';
+            
+            chassis.lpars.forEach(lpar => {
+                const lparBox = document.createElement('div');
+                lparBox.className = 'lpar-box';
+                lparBox.setAttribute('data-id', lpar.id);
+                
+                lparBox.innerHTML = `
+                    <div class="lpar-title">${lpar.name}</div>
+                    <div class="lpar-details">CPU: ${lpar.cpu || 0}</div>
+                    <div class="lpar-details">Memory: ${lpar.memory || 0} GB</div>
+                    <div class="lpar-details">OS: ${lpar.os || 'Unknown'}</div>
+                    <div class="lpar-details">Apps: ${lpar.apps ? lpar.apps.length : 0}</div>
+                `;
+                
+                // Add click event only if there are apps
+                if (lpar.apps && lpar.apps.length > 0) {
+                    lparBox.addEventListener('click', () => {
+                        currentLparId = lpar.id;
+                        currentLevel = 'app';
+                        updateView();
+                    });
+                    lparBox.style.cursor = 'pointer';
+                } else {
+                    lparBox.style.cursor = 'default';
+                    lparBox.style.opacity = '0.8';
+                }
+                
+                lparGrid.appendChild(lparBox);
+            });
+            
+            // Check if there are any LPARs
+            if (chassis.lpars.length === 0) {
+                lparGrid.innerHTML = '<div class="empty-message">No LPARs found for this chassis</div>';
+            }
+            
+            content.innerHTML = '';
+            content.appendChild(lparGrid);
+        }
+        
+        // Render app list for a specific LPAR
+        function renderAppList(chassisId, lparId) {
+            const chassis = data.chassis.find(c => c.id === chassisId);
+            if (!chassis) return;
+            
+            const lpar = chassis.lpars.find(l => l.id === lparId);
+            if (!lpar) return;
+            
+            // Update summary
+            summaryDiv.innerHTML = `
+                <div class="summary-title">${lpar.name}</div>
+                <div class="stats-container">
+                    <div class="stat-box">CPU: ${lpar.cpu || 0}</div>
+                    <div class="stat-box">Memory: ${lpar.memory || 0} GB</div>
+                    <div class="stat-box">OS: ${lpar.os || 'Unknown'}</div>
+                    <div class="stat-box">Apps: ${lpar.apps ? lpar.apps.length : 0}</div>
+                </div>
+            `;
+            
+            // Create app grid
+            const appGrid = document.createElement('div');
+            appGrid.className = 'app-grid';
+            appGrid.style.display = 'grid';
+            
+            if (lpar.apps && lpar.apps.length > 0) {
+                lpar.apps.forEach(app => {
+                    const appBox = document.createElement('div');
+                    appBox.className = 'app-box';
+                    appBox.setAttribute('data-id', app.id);
+                    
+                    let itemsHtml = '';
+                    if (app.items && app.items.length > 0) {
+                        itemsHtml = '<ul style="padding-left: 20px; margin-top: 5px;">';
+                        app.items.forEach(item => {
+                            const version = item.version ? `v${item.version}` : '';
+                            itemsHtml += `<li>${item.name} ${version}</li>`;
+                        });
+                        itemsHtml += '</ul>';
+                    }
+                    
+                    appBox.innerHTML = `
+                        <div class="app-title">${app.name}</div>
+                        <div class="app-type">Type: ${app.type}</div>
+                        <div class="app-type">Count: ${app.count}</div>
+                        ${itemsHtml}
+                    `;
+                    
+                    appGrid.appendChild(appBox);
+                });
+            } else {
+                appGrid.innerHTML = '<div class="empty-message">No applications found for this LPAR</div>';
+            }
+            
+            content.innerHTML = '';
+            content.appendChild(appGrid);
+        }
+        
+        // Update breadcrumb
+        function updateBreadcrumb() {
+            breadcrumb.innerHTML = '<span data-level="chassis">Systems Overview</span>';
+            
+            if (currentLevel === 'lpar' || currentLevel === 'app') {
+                const chassis = data.chassis.find(c => c.id === currentChassisId);
+                if (chassis) {
+                    breadcrumb.innerHTML += ' > <span data-level="lpar" data-id="' + chassis.id + '">' + chassis.name + '</span>';
+                }
+            }
+            
+            if (currentLevel === 'app') {
+                const chassis = data.chassis.find(c => c.id === currentChassisId);
+                if (chassis) {
+                    const lpar = chassis.lpars.find(l => l.id === currentLparId);
+                    if (lpar) {
+                        breadcrumb.innerHTML += ' > <span data-level="app" data-id="' + lpar.id + '">' + lpar.name + '</span>';
+                    }
+                }
+            }
+            
+            // Add click event to breadcrumb items
+            const spans = breadcrumb.querySelectorAll('span');
+            spans.forEach(span => {
+                span.addEventListener('click', () => {
+                    const level = span.getAttribute('data-level');
+                    const id = span.getAttribute('data-id');
+                    
+                    if (level === 'chassis') {
+                        currentLevel = 'chassis';
+                        currentChassisId = null;
+                        currentLparId = null;
+                    } else if (level === 'lpar') {
+                        currentLevel = 'lpar';
+                        currentChassisId = id;
+                        currentLparId = null;
+                    }
+                    
+                    updateView();
+                });
+            });
+        }
+        
+        // Update back button visibility
+        function updateBackButton() {
+            if (currentLevel === 'chassis') {
+                backButton.style.display = 'none';
+            } else {
+                backButton.style.display = 'inline-block';
+            }
+            
+            // Add click event
+            backButton.onclick = () => {
+                if (currentLevel === 'lpar') {
+                    currentLevel = 'chassis';
+                    currentChassisId = null;
+                } else if (currentLevel === 'app') {
+                    currentLevel = 'lpar';
+                    currentLparId = null;
+                }
+                
+                updateView();
+            };
+        }
+        
+        // Update the current view
+        function updateView() {
+            // Update breadcrumb
+            updateBreadcrumb();
+            
+            // Update back button
+            updateBackButton();
+            
+            // Render appropriate content
+            if (currentLevel === 'chassis') {
+                renderChassisList(data.chassis);
+            } else if (currentLevel === 'lpar' && currentChassisId) {
+                renderLparList(currentChassisId);
+            } else if (currentLevel === 'app' && currentChassisId && currentLparId) {
+                renderAppList(currentChassisId, currentLparId);
+            }
+        }
+        
+        // Initialize
+        async function init() {
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+            content.innerHTML = '';
+            
+            try {
+                // Load data
+                data = await parseData();
+                
+                // Hide loading spinner
+                loadingSpinner.style.display = 'none';
+                
+                if (data && data.chassis && data.chassis.length > 0) {
+                    updateView();
+                } else {
+                    content.innerHTML = '<div class="empty-message">No chassis data found. Please check the input file.</div>';
+                }
+            } catch (error) {
+                console.error("Error initializing visualization:", error);
+                loadingSpinner.style.display = 'none';
+                content.innerHTML = '<div class="empty-message">Error loading data: ' + error.message + '</div>';
+            }
+        }
+        
+        // Start the application
+        init();
+        
+    </script>
+</body>
+</html>

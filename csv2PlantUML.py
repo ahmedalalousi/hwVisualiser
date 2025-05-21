@@ -1,0 +1,439 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+CSV to PlantUML/C4 Diagram Generator
+
+This script parses hardware inventory CSV files, specifically BOII2.csv and sample BOI.csv,
+and generates PlantUML and C4 diagram files representing the hardware/software architecture.
+
+Usage:
+    python csv2PlantUML.py --input-dir <input_directory> --output-dir <output_directory> --format <plantuml|c4|both>
+
+Arguments:
+    --input-dir      Directory containing the input CSV files
+    --output-dir     Directory where the output files will be written
+    --format         Output format: 'plantuml', 'c4', or 'both'
+"""
+
+import os
+import sys
+import csv
+import argparse
+import re
+from pathlib import Path
+
+
+def clean_id(text):
+    """
+    Convert a text string to a valid identifier by removing special characters
+    and replacing spaces with underscores.
+    """
+    if not text:
+        return "unknown"
+    # Replace spaces and special characters
+    clean = re.sub(r'[^a-zA-Z0-9]', '_', str(text))
+    # Ensure it doesn't start with a number
+    if clean and clean[0].isdigit():
+        clean = 'id_' + clean
+    return clean
+
+
+class HardwareInventory:
+    def __init__(self):
+        self.systems = {}  # Chassis/systems
+        self.lpars = {}    # Logical partitions
+        self.apps = {}     # Applications
+
+    def load_boii2_csv(self, filename):
+        """
+        Load and parse the BOII2 CSV file containing LPAR information.
+        """
+        print(f"Loading LPAR data from {filename}...")
+        
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    # Extract system (chassis) information
+                    system_name = row.get('Managed System Name', '')
+                    system_serial = row.get('Managed System Serial', '')
+                    
+                    if not system_name:
+                        continue
+                    
+                    # Create system entry if it doesn't exist
+                    if system_name not in self.systems:
+                        # Parse model information from system name
+                        system_parts = system_name.split('-')
+                        model_type = system_parts[0] if system_parts else 'Unknown'
+                        model_number = system_parts[1] if len(system_parts) > 1 else 'Unknown'
+                        
+                        self.systems[system_name] = {
+                            'serial': system_serial,
+                            'model_type': model_type,
+                            'model_number': model_number,
+                            'lpars': [],
+                            'total_cpu': 0,
+                            'total_memory': 0
+                        }
+                    
+                    # Extract LPAR information
+                    lpar_name = row.get('POR - Virtual Name - use this ONE') or \
+                                row.get('POR - Virtual Name') or \
+                                row.get('Name')
+                    
+                    if not lpar_name:
+                        continue
+                    
+                    # Parse CPU and memory values
+                    try:
+                        lpar_cpu = float(row.get('LPAR CPU', 0))
+                    except (ValueError, TypeError):
+                        lpar_cpu = 0
+                    
+                    try:
+                        lpar_memory = float(row.get('LPAR MEM', 0))
+                    except (ValueError, TypeError):
+                        lpar_memory = 0
+                    
+                    # Create LPAR entry
+                    lpar_id = row.get('ID', '')
+                    lpar_data = {
+                        'id': lpar_id,
+                        'name': lpar_name,
+                        'status': row.get('Status', ''),
+                        'environment': row.get('Environment', ''),
+                        'os_version': row.get('OS Version', ''),
+                        'cpu': lpar_cpu,
+                        'memory': lpar_memory,
+                        'system': system_name,
+                        'applications': []
+                    }
+                    
+                    # Add LPAR to system and to overall LPAR dictionary
+                    self.systems[system_name]['lpars'].append(lpar_name)
+                    self.systems[system_name]['total_cpu'] += lpar_cpu
+                    self.systems[system_name]['total_memory'] += lpar_memory
+                    self.lpars[lpar_name] = lpar_data
+                    
+            print(f"Loaded {len(self.systems)} systems and {len(self.lpars)} LPARs.")
+            
+        except Exception as e:
+            print(f"Error loading BOII2 CSV: {e}")
+            raise
+
+    def load_sample_boi_csv(self, filename):
+        """
+        Load and parse the Sample BOI CSV file containing application information.
+        """
+        print(f"Loading application data from {filename}...")
+        
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                
+                # Create a mapping from computer names to applications
+                computer_apps = {}
+                
+                for row in reader:
+                    computer_name = row.get('Computer Name', '')
+                    
+                    if not computer_name:
+                        continue
+                    
+                    app_data = {
+                        'name': row.get('Component Name', ''),
+                        'type': row.get('App type', ''),
+                        'version': row.get('Component Version', ''),
+                        'product': row.get('Product Name', ''),
+                        'metric': row.get('Product Metric', ''),
+                        'computer': computer_name
+                    }
+                    
+                    # Add application to computer's app list
+                    if computer_name not in computer_apps:
+                        computer_apps[computer_name] = []
+                    
+                    computer_apps[computer_name].append(app_data)
+                    
+                    # Add to global apps dictionary
+                    app_id = f"{computer_name}_{clean_id(app_data['name'])}"
+                    self.apps[app_id] = app_data
+                
+                # Match applications to LPARs based on name similarity
+                self._match_apps_to_lpars(computer_apps)
+                
+            print(f"Loaded {len(self.apps)} applications.")
+            
+        except Exception as e:
+            print(f"Error loading Sample BOI CSV: {e}")
+            raise
+
+    def _match_apps_to_lpars(self, computer_apps):
+        """
+        Match applications to LPARs based on name similarity.
+        """
+        matched_apps = 0
+        unmatched_computers = []
+        
+        for computer_name, apps in computer_apps.items():
+            matched = False
+            
+            # Try exact match first
+            if computer_name in self.lpars:
+                self.lpars[computer_name]['applications'].extend(apps)
+                matched_apps += len(apps)
+                matched = True
+            else:
+                # Try partial matching
+                for lpar_name, lpar in self.lpars.items():
+                    if (lpar_name.lower() in computer_name.lower() or 
+                        computer_name.lower() in lpar_name.lower()):
+                        lpar['applications'].extend(apps)
+                        matched_apps += len(apps)
+                        matched = True
+                        break
+            
+            if not matched:
+                unmatched_computers.append(computer_name)
+        
+        print(f"Matched {matched_apps} applications to LPARs.")
+        if unmatched_computers:
+            print(f"Could not match {len(unmatched_computers)} computers to LPARs.")
+
+    def generate_plantuml(self, output_file):
+        """
+        Generate a PlantUML diagram from the loaded data.
+        """
+        print(f"Generating PlantUML diagram to {output_file}...")
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("@startuml\n")
+            f.write("' Hardware Inventory Diagram\n")
+            f.write("' Generated by csv2PlantUML.py\n\n")
+            
+            # Add title
+            f.write("title Hardware Inventory Architecture\n\n")
+            
+            # Add styling
+            f.write("' Styling\n")
+            f.write("skinparam rectangle {\n")
+            f.write("  BackgroundColor<<Chassis>> LightBlue\n")
+            f.write("  BackgroundColor<<LPAR>> LightGreen\n")
+            f.write("  BorderColor Black\n")
+            f.write("  FontSize 12\n")
+            f.write("}\n\n")
+            f.write("skinparam component {\n")
+            f.write("  BackgroundColor LightYellow\n")
+            f.write("  BorderColor Black\n")
+            f.write("  FontSize 10\n")
+            f.write("}\n\n")
+            
+            # Generate diagram content for each system/chassis
+            for system_name, system in self.systems.items():
+                system_id = clean_id(system_name)
+                
+                # Write system rectangle header - all on one line to avoid issues
+                system_string = (f"rectangle \"{system_name}\\n"
+                            f"Model: {system['model_type']} {system['model_number']}\\n"
+                            f"Serial: {system['serial']}\\n"
+                            f"Total CPU: {system['total_cpu']}\\n"
+                            f"Total Memory: {system['total_memory']} GB\" as {system_id} <<Chassis>> {{\n")
+                f.write(system_string)
+                
+                # Add LPARs for this system
+                for lpar_name in system['lpars']:
+                    lpar = self.lpars.get(lpar_name, {})
+                    lpar_id = clean_id(lpar_name)
+                    
+                    # Write LPAR rectangle header - all on one line to avoid issues
+                    lpar_string = (f"  rectangle \"{lpar_name}\\n"
+                               f"CPU: {lpar.get('cpu', 0)}\\n"
+                               f"Memory: {lpar.get('memory', 0)} GB\\n"
+                               f"OS: {lpar.get('os_version', 'Unknown')}\" "
+                               f"as {lpar_id} <<LPAR>> {{\n")
+                    f.write(lpar_string)
+                    
+                    # Add applications for this LPAR
+                    app_types = {}
+                    for app in lpar.get('applications', []):
+                        app_type = app.get('type', 'Unknown')
+                        if app_type not in app_types:
+                            app_types[app_type] = []
+                        app_types[app_type].append(app)
+                    
+                    # Group applications by type
+                    for app_type, apps in app_types.items():
+                        type_id = clean_id(f"{lpar_name}_{app_type}")
+                        
+                        # Write package header - all on one line to avoid issues
+                        f.write(f"    package \"{app_type} ({len(apps)})\" as {type_id} {{\n")
+                        
+                        for app in apps:
+                            app_name = app.get('name', 'Unknown')
+                            app_version = app.get('version', '')
+                            app_id = clean_id(f"{lpar_name}_{app_name}")
+                            
+                            version_str = f" v{app_version}" if app_version else ""
+                            f.write(f"      component \"{app_name}{version_str}\" as {app_id}\n")
+                        
+                        f.write("    }\n")
+                    
+                    f.write("  }\n")
+                
+                f.write("}\n\n")
+            
+            f.write("@enduml\n")
+            
+        print(f"PlantUML diagram generated successfully.")
+
+    def generate_c4(self, output_file):
+        """
+        Generate a C4 diagram from the loaded data.
+        """
+        print(f"Generating C4 diagram to {output_file}...")
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("@startuml\n")
+            f.write("' C4 Hardware Inventory Diagram\n")
+            f.write("' Generated by csv2PlantUML.py\n\n")
+            
+            # Include C4 PlantUML macros
+            f.write("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n\n")
+            
+            # Add title
+            f.write("title Hardware Inventory Architecture - C4 Diagram\n\n")
+            
+            # Define systems as System boundaries
+            for system_name, system in self.systems.items():
+                system_id = clean_id(system_name)
+                description = f"Model: {system['model_type']} {system['model_number']}, "
+                description += f"Serial: {system['serial']}, "
+                description += f"CPU: {system['total_cpu']}, Memory: {system['total_memory']} GB"
+                
+                # Write System_Boundary - all on one line to avoid issues
+                f.write(f"System_Boundary({system_id}, \"{system_name}\", \"{description}\") {{\n")
+                
+                # Add LPARs as Containers
+                for lpar_name in system['lpars']:
+                    lpar = self.lpars.get(lpar_name, {})
+                    if not lpar:
+                        continue
+                        
+                    lpar_id = clean_id(lpar_name)
+                    lpar_desc = f"CPU: {lpar.get('cpu', 0)}, Memory: {lpar.get('memory', 0)} GB, "
+                    lpar_desc += f"OS: {lpar.get('os_version', 'Unknown')}"
+                    
+                    f.write(f"  Container({lpar_id}, \"{lpar_name}\", \"LPAR\", \"{lpar_desc}\")\n")
+                    
+                    # Count applications by type
+                    app_counts = {}
+                    for app in lpar.get('applications', []):
+                        app_type = app.get('type', 'Unknown')
+                        app_counts[app_type] = app_counts.get(app_type, 0) + 1
+                    
+                    # Add application groups as Components
+                    for app_type, count in app_counts.items():
+                        app_group_id = clean_id(f"{lpar_name}_{app_type}")
+                        app_group_desc = f"{count} applications"
+                        
+                        f.write(f"  Component({app_group_id}, \"{app_type}\", \"Application Group\", \"{app_group_desc}\")\n")
+                        f.write(f"  Rel({lpar_id}, {app_group_id}, \"hosts\")\n")
+                
+                f.write("}\n\n")
+            
+            # Add legend
+            f.write("SHOW_LEGEND()\n")
+            f.write("@enduml\n")
+            
+        print(f"C4 diagram generated successfully.")
+
+    def analyze(self):
+        """
+        Print analysis of the loaded data.
+        """
+        print("\n=== Data Analysis ===")
+        
+        print(f"Total Systems/Chassis: {len(self.systems)}")
+        print(f"Total LPARs: {len(self.lpars)}")
+        print(f"Total Applications: {len(self.apps)}")
+        
+        # Count application types
+        app_types = {}
+        for app in self.apps.values():
+            app_type = app.get('type', 'Unknown')
+            app_types[app_type] = app_types.get(app_type, 0) + 1
+        
+        print("\nApplication Types:")
+        for app_type, count in sorted(app_types.items(), key=lambda x: x[1], reverse=True):
+            print(f"  {app_type}: {count}")
+        
+        # System with most LPARs
+        if self.systems:
+            max_lpar_system = max(self.systems.items(), key=lambda x: len(x[1]['lpars']))
+            print(f"\nSystem with most LPARs: {max_lpar_system[0]} ({len(max_lpar_system[1]['lpars'])} LPARs)")
+        
+        # LPAR with most applications
+        if self.lpars:
+            max_app_lpar = max(self.lpars.items(), key=lambda x: len(x[1].get('applications', [])))
+            print(f"LPAR with most applications: {max_app_lpar[0]} ({len(max_app_lpar[1].get('applications', []))} apps)")
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Generate PlantUML and C4 diagrams from hardware inventory CSV files.')
+    parser.add_argument('--input-dir', required=True, help='Directory containing the input CSV files')
+    parser.add_argument('--output-dir', required=True, help='Directory where the output files will be written')
+    parser.add_argument('--format', choices=['plantuml', 'c4', 'both'], default='both', 
+                        help='Output format: plantuml, c4, or both')
+    
+    args = parser.parse_args()
+    
+    # Check if input directory exists
+    input_dir = Path(args.input_dir)
+    if not input_dir.exists() or not input_dir.is_dir():
+        print(f"Error: Input directory '{args.input_dir}' does not exist or is not a directory.")
+        return 1
+    
+    # Create output directory if it doesn't exist
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Find input files
+    boii2_file = None
+    sample_boi_file = None
+    
+    for file in input_dir.glob('*.csv'):
+        if file.name.lower() == 'boii2.csv':
+            boii2_file = file
+        elif file.name.lower() == 'sample boi.csv' or file.name.lower() == 'sample_boi.csv':
+            sample_boi_file = file
+    
+    if not boii2_file:
+        print("Error: Could not find BOII2.csv in the input directory.")
+        return 1
+    
+    if not sample_boi_file:
+        print("Error: Could not find 'sample BOI.csv' in the input directory.")
+        return 1
+    
+    # Load and process the data
+    inventory = HardwareInventory()
+    inventory.load_boii2_csv(boii2_file)
+    inventory.load_sample_boi_csv(sample_boi_file)
+    inventory.analyze()
+    
+    # Generate the diagrams
+    if args.format in ['plantuml', 'both']:
+        plantuml_output = output_dir / 'hardware_inventory.puml'
+        inventory.generate_plantuml(plantuml_output)
+    
+    if args.format in ['c4', 'both']:
+        c4_output = output_dir / 'hardware_inventory_c4.puml'
+        inventory.generate_c4(c4_output)
+    
+    print("\nAll operations completed successfully.")
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
