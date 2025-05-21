@@ -1,3 +1,10 @@
 # Backup directory for US English files
 backup_us_english_20250521_144409/
-"__pycache__/"
+__pycache__/
+.DS_Store
+Icon
+Icon?
+.Icon*
+.Trashes
+.Spotlight-V100
+.fseventsd
