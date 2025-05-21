@@ -77,7 +77,7 @@ def generate_html(data, output_file):
     """Generate HTML visualization from the data."""
     # Read the template HTML file
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    template_path = os.path.join(script_dir, 'hardware_inventory_visualization.html')
+    template_path = os.path.join(script_dir, 'hardware_inventory_visualisation.html')
     
     if not os.path.exists(template_path):
         print(f"Error: Template file not found at {template_path}")
