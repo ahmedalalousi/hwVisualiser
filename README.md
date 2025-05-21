@@ -1,6 +1,6 @@
-# Hardware Inventory Visualization
+# Hardware Inventory Visualisation
 
-This project contains Python scripts to parse hardware inventory CSV files and generate interactive visualizations, allowing you to explore the relationship between hardware chassis, LPARs (Logical Partitions), and applications.
+This project contains Python scripts to parse hardware inventory CSV files and generate interactive visualisations, allowing you to explore the relationship between hardware chassis, LPARs (Logical Partitions), and applications.
 
 ## 📋 Scripts Overview
 
@@ -39,14 +39,14 @@ This is the most common workflow:
 
 1. Start with your hardware inventory CSV files
 2. Parse them into PlantUML diagrams
-3. Generate an interactive SVG visualization
+3. Generate an interactive SVG visualisation
 
 ```bash
 # Step 1: Parse CSV files
 python parse_csv_to_diagrams.py --input-dir ./data --output-dir ./diagrams
 
 # Step 2: Generate interactive SVG
-python generate_interactive_svg.py --input ./diagrams/hardware_inventory.puml --output ./visualizations/interactive_diagram.svg
+python generate_interactive_svg.py --input ./diagrams/hardware_inventory.puml --output ./visualisations/interactive_diagram.svg
 ```
 
 ### Batch Processing Workflow
@@ -58,7 +58,7 @@ For processing multiple files or generating multiple outputs:
 python parse_csv_to_diagrams.py --input-dir ./data --output-dir ./diagrams --format both
 
 # Generate interactive SVGs for all PlantUML files in a directory
-python generate_interactive_svg.py --input ./diagrams --output ./visualizations/interactive_diagram.svg --pattern "*.puml"
+python generate_interactive_svg.py --input ./diagrams --output ./visualisations/interactive_diagram.svg --pattern "*.puml"
 ```
 
 ### Integration Workflow
@@ -96,7 +96,7 @@ python generate_interactive_svg.py --input ./analysis/hardware_inventory.puml --
 
 ### 3. Capacity Planning
 
-Use the visualizations to assist with capacity planning:
+Use the visualisations to assist with capacity planning:
 
 ```bash
 # Generate detailed diagrams showing resource allocation
@@ -151,7 +151,7 @@ python generate_interactive_svg.py --input <input_file_or_directory> --output <o
 
 **Example:**
 ```
-python generate_interactive_svg.py --input ./diagrams/hardware_inventory.puml --output ./visualizations/interactive_diagram.svg
+python generate_interactive_svg.py --input ./diagrams/hardware_inventory.puml --output ./visualisations/interactive_diagram.svg
 ```
 
 ## 🖱️ Interactive SVG Features
