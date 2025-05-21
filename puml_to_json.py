@@ -4,7 +4,7 @@
 PlantUML to JSON Converter
 
 This script parses a PlantUML hardware inventory diagram and converts it to JSON format
-that can be used by the visualization HTML page.
+that can be used by the visualisation HTML page.
 
 Usage:
     python puml_to_json.py --input <input_file> --output <output_file>
