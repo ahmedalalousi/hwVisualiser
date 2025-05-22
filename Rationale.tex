@@ -1,0 +1,608 @@
+% Hardware Inventory Visualization - Technical Documentation
+% To be compiled with LuaLaTeX
+
+\documentclass[a4paper,12pt]{article}
+
+% Packages
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Set font to Helvetica
+\setmainfont{Helvetica}
+\setsansfont{Helvetica}
+
+% Set full justification, no hanging indents
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+% Set page geometry
+\geometry{margin=2.5cm}
+
+% Configure hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+}
+
+% Configure code listings
+\lstset{
+    basicstyle=\ttfamily\small,
+    frame=single,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+}
+
+\begin{document}
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    {\Huge\textbf{Hardware Inventory Visualisation Tool}\par}
+    \vspace{0.5cm}
+    {\Large Technical Documentation\par}
+    \vspace{1cm}
+    {\large\textbf{Version 1.0}\par}
+    \vspace{0.5cm}
+    {\large\today\par}
+    \vfill
+    {\large Ahmed Al-Alousi\par}
+    \vspace{2cm}
+\end{titlepage}
+
+
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+This document provides a comprehensive technical overview of the Hardware Inventory Visualisation system. The system processes CSV files containing hardware inventory data and generates interactive SVG visualisations that allow users to explore the relationships between hardware chassis, LPARs (Logical Partitions), and applications.
+
+The system consists of two main components:
+\begin{enumerate}
+    \item A CSV parser that generates PlantUML and C4 diagram files
+    \item An SVG generator that creates interactive diagrams with drill-down capabilities
+\end{enumerate}
+
+This documentation details the algorithms, data structures, and techniques used in the implementation, enabling developers to recreate the system or extend its functionality.
+
+\section{System Architecture}
+
+The overall architecture follows a two-stage pipeline:
+
+\begin{enumerate}
+    \item \textbf{Stage 1:} CSV files are parsed and transformed into PlantUML and/or C4 diagram files
+    \item \textbf{Stage 2:} PlantUML files are converted into interactive SVG diagrams
+\end{enumerate}
+
+Each stage is implemented as a separate Python script to maintain modularity and allow for independent usage or extension.
+
+\subsection{Data Flow}
+
+The data flow through the system proceeds as follows:
+
+\begin{enumerate}
+    \item Input CSV files containing hardware inventory data are read
+    \item The data is parsed and organised into a hierarchical structure
+    \item PlantUML and/or C4 diagram files are generated from the hierarchical structure
+    \item PlantUML files are converted to SVG using the PlantUML jarPython 
+    \item The SVG is enhanced with JavaScript to add interactivity
+    \item The interactive SVG is output as the final product
+\end{enumerate}
+
+This pipeline architecture allows for easy extension or modification of individual components without affecting the rest of the system.
+
+\section{CSV Parser Implementation}
+
+The CSV parser component is responsible for reading the input CSV files, parsing the data, and generating PlantUML and C4 diagram files. This section details the implementation of this component.
+
+\subsection{Data Structures}
+
+The parser uses the following primary data structures:
+
+\begin{enumerate}
+    \item \textbf{Systems Dictionary}: A dictionary mapping system names to system information, including LPARs and resource totals
+    \item \textbf{LPARs Dictionary}: A dictionary mapping LPAR names to LPAR information, including applications and resource allocations
+    \item \textbf{Applications Dictionary}: A dictionary mapping application IDs to application information
+\end{enumerate}
+
+The hierarchical relationship between these structures mirrors the real-world relationship between systems, LPARs, and applications.
+
+\subsection{CSV Reading Algorithm}
+
+The CSV files are read using Python's built-in \texttt{csv} module. The algorithm for reading the BOII2 CSV file is as follows:
+
+\begin{algorithm}
+\caption{BOII2 CSV Reading Algorithm}
+\begin{algorithmic}[1]
+\Procedure{LoadBOII2CSV}{$filename$}
+    \State Open $filename$ for reading
+    \State Create CSV reader with header row
+    \For{each $row$ in CSV}
+        \State Extract $system\_name$ from "Managed System Name" column
+        \State Extract $system\_serial$ from "Managed System Serial" column
+        \If{$system\_name$ not in $systems$}
+            \State $systems[system\_name] \gets$ new system with $system\_serial$
+        \EndIf
+        \State Extract $lpar\_name$ from "POR - Virtual Name - use this ONE" column (or alternatives)
+        \State Extract $lpar\_cpu$ from "LPAR CPU" column
+        \State Extract $lpar\_memory$ from "LPAR MEM" column
+        \State Create new LPAR with extracted information
+        \State Add LPAR to $systems[system\_name].lpars$
+        \State Add LPAR to $lpars$ dictionary
+        \State Update $systems[system\_name]$ resource totals
+    \EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The algorithm for reading the Sample BOI CSV file is similar:
+
+\begin{algorithm}
+\caption{Sample BOI CSV Reading Algorithm}
+\begin{algorithmic}[1]
+\Procedure{LoadSampleBOICSV}{$filename$}
+    \State Open $filename$ for reading
+    \State Create CSV reader with header row
+    \State Initialise $computer\_apps$ dictionary
+    \For{each $row$ in CSV}
+        \State Extract $computer\_name$ from "Computer Name" column
+        \State Create application with information from row
+        \State Add application to $computer\_apps[computer\_name]$
+        \State Add application to $apps$ dictionary
+    \EndFor
+    \State Match applications to LPARs using name similarity
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Application Matching Algorithm}
+
+A critical part of the implementation is matching applications to LPARs based on name similarity. The algorithm for this is as follows:
+
+\begin{algorithm}
+\caption{Application Matching Algorithm}
+\begin{algorithmic}[1]
+\Procedure{MatchAppsToLPARs}{$computer\_apps$}
+    \For{each $(computer\_name, apps)$ in $computer\_apps$}
+        \State $matched \gets False$
+        \State Convert $computer\_name$ to lowercase
+        \If{$computer\_name$ in $lpars$ (exact match)}
+            \State Add $apps$ to $lpars[computer\_name].applications$
+            \State $matched \gets True$
+        \Else
+            \For{each $(lpar\_name, lpar)$ in $lpars$}
+                \State Convert $lpar\_name$ to lowercase
+                \If{$lpar\_name$ contains $computer\_name$ OR $computer\_name$ contains $lpar\_name$}
+                    \State Add $apps$ to $lpar.applications$
+                    \State $matched \gets True$
+                    \State \textbf{break}
+                \EndIf
+            \EndFor
+        \EndIf
+        \If{not $matched$}
+            \State Add $computer\_name$ to unmatched computers list
+        \EndIf
+    \EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+This matching algorithm uses both exact and partial matching to maximise the connection between applications and LPARs despite potential naming inconsistencies between the CSV files.
+
+\subsection{PlantUML Generation Algorithm}
+
+The PlantUML generation algorithm converts the hierarchical data structure into a textual representation following PlantUML syntax:
+
+\begin{algorithm}
+\caption{PlantUML Generation Algorithm}
+\begin{algorithmic}[1]
+\Procedure{GeneratePlantUML}{$output\_file$}
+    \State Open $output\_file$ for writing
+    \State Write PlantUML header and styling
+    \For{each $(system\_name, system)$ in $systems$}
+        \State Write system rectangle with metadata
+        \For{each $lpar\_name$ in $system.lpars$}
+            \State Retrieve $lpar$ from $lpars$ dictionary
+            \State Write LPAR rectangle with metadata
+            \State Group applications by type
+            \For{each $(app\_type, apps)$ in grouped applications}
+                \State Write package block for app type
+                \For{each $app$ in $apps$}
+                    \State Write component for app with metadata
+                \EndFor
+                \State Close package block
+            \EndFor
+            \State Close LPAR rectangle
+        \EndFor
+        \State Close system rectangle
+    \EndFor
+    \State Write PlantUML footer
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The algorithm produces a hierarchically structured PlantUML diagram that reflects the relationships between systems, LPARs, and applications.
+
+\subsection{C4 Generation Algorithm}
+
+The C4 generation algorithm follows a similar pattern but uses C4 model syntax:
+
+\begin{algorithm}
+\caption{C4 Generation Algorithm}
+\begin{algorithmic}[1]
+\Procedure{GenerateC4}{$output\_file$}
+    \State Open $output\_file$ for writing
+    \State Write C4 header and include required libraries
+    \For{each $(system\_name, system)$ in $systems$}
+        \State Write System\_Boundary for system with metadata
+        \For{each $lpar\_name$ in $system.lpars$}
+            \State Retrieve $lpar$ from $lpars$ dictionary
+            \State Write Container for LPAR with metadata
+            \State Count applications by type
+            \For{each $(app\_type, count)$ in application counts}
+                \State Write Component for application group
+                \State Write Rel between LPAR and application group
+            \EndFor
+        \EndFor
+        \State Close System\_Boundary
+    \EndFor
+    \State Write legend and footer
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+This algorithm produces a C4 model diagram that represents the system architecture using the C4 model's standardised notation.
+
+\section{SVG Generator Implementation}
+
+The SVG generator component converts PlantUML files into interactive SVG diagrams. This section details the implementation of this component.
+
+\subsection{PlantUML to SVG Conversion}
+
+The conversion from PlantUML to SVG is performed using the PlantUML jar:
+
+\begin{algorithm}
+\caption{PlantUML to SVG Conversion Algorithm}
+\begin{algorithmic}[1]
+\Procedure{GenerateSVG}{$input\_file, output\_file$}
+    \State Ensure PlantUML jar is available (download if needed)
+    \State Execute command: java -jar plantuml.jar -tsvg $input\_file$ -o $output\_dir$
+    \State Check if output file exists
+    \State Return path to generated SVG
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{PlantUML Hierarchy Extraction}
+
+To make the SVG interactive, the hierarchy from the PlantUML file must be extracted:
+
+\begin{algorithm}
+\caption{PlantUML Hierarchy Extraction Algorithm}
+\begin{algorithmic}[1]
+\Procedure{ParsePlantUML}{$plantuml\_file$}
+    \State Initialise empty hierarchy dictionary
+    \State Initialise empty current path stack
+    \For{each $line$ in $plantuml\_file$}
+        \If{$line$ matches rectangle definition pattern}
+            \State Extract label and ID
+            \State Extract metadata and object type
+            \State Create object entry
+            \If{current path is not empty}
+                \State Add object as child to current parent
+            \Else
+                \State Add object as root in hierarchy
+            \EndIf
+            \If{object has children (ends with \{)}
+                \State Push object ID to current path
+            \EndIf
+        \ElsIf{$line$ matches component definition pattern}
+            \State Extract label and ID
+            \State Create component entry
+            \If{current path is not empty}
+                \State Add component as child to current parent
+            \Else
+                \State Add component as root in hierarchy
+            \EndIf
+        \ElsIf{$line$ matches package definition pattern}
+            \State Extract label and ID
+            \State Create package entry
+            \If{current path is not empty}
+                \State Add package as child to current parent
+            \Else
+                \State Add package as root in hierarchy
+            \EndIf
+            \If{package has children (ends with \{)}
+                \State Push package ID to current path
+            \EndIf
+        \ElsIf{$line$ is closing brace}
+            \State Pop from current path
+        \EndIf
+    \EndFor
+    \State Return hierarchy
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+This algorithm parses the PlantUML file line by line, extracting the hierarchical structure of objects (rectangles, components, and packages) and their relationships.
+
+\subsection{SVG Enhancement Algorithm}
+
+The SVG enhancement algorithm adds JavaScript and CSS to the SVG to make it interactive:
+
+\begin{algorithm}
+\caption{SVG Enhancement Algorithm}
+\begin{algorithmic}[1]
+\Procedure{MakeInteractive}{$svg\_file, plantuml\_file, output\_file$}
+    \State Extract hierarchy from PlantUML file
+    \State Parse SVG file as XML
+    \State Find all group elements in SVG
+    \For{each $group$ in groups}
+        \State Extract group ID
+        \State Find title element with PlantUML ID
+        \If{matching element found in hierarchy}
+            \State Find rect or polygon element
+            \State Extract position and dimensions
+            \State Store element info
+            \State Add onclick handler to group
+            \State Add hover styling to rect/polygon
+        \EndIf
+    \EndFor
+    \State Add JavaScript with element info and interactive functions
+    \State Add CSS for styling interactive elements
+    \State Add HTML panel for displaying details
+    \State Save modified SVG
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The SVG enhancement adds the following interactive features:
+\begin{enumerate}
+    \item Click handlers on elements to show details
+    \item Hover effects to indicate clickable elements
+    \item A details panel that displays information about the selected element
+    \item Drill-down navigation for exploring the hierarchy
+    \item Breadcrumb navigation for returning to higher levels
+\end{enumerate}
+
+\subsection{JavaScript Implementation}
+
+The JavaScript implementation adds the following functions to the SVG:
+
+\begin{enumerate}
+    \item \textbf{showDetails(id)}: Displays details for an element
+    \item \textbf{hideDetails()}: Hides the details panel
+    \item \textbf{drillDown(id)}: Navigates to a child element
+    \item \textbf{navigateTo(index)}: Navigates to a specific level in the path
+\end{enumerate}
+
+The JavaScript code also includes the hierarchy data extracted from the PlantUML file, enabling the interactive features to work without additional server requests.
+
+\section{Command-Line Interface}
+
+Both components include command-line interfaces to facilitate usage and integration with other tools.
+
+\subsection{CSV Parser Command-Line Interface}
+
+The CSV parser's command-line interface accepts the following arguments:
+
+\begin{itemize}
+    \item \textbf{--input-dir}: Directory containing the input CSV files
+    \item \textbf{--output-dir}: Directory where the output files will be written
+    \item \textbf{--format}: Output format (plantuml, c4, or both)
+\end{itemize}
+
+\subsection{SVG Generator Command-Line Interface}
+
+The SVG generator's command-line interface accepts the following arguments:
+
+\begin{itemize}
+    \item \textbf{--input}: Input PlantUML file or directory
+    \item \textbf{--output}: Output SVG file path
+    \item \textbf{--plantuml-jar}: Path to plantuml.jar (optional)
+    \item \textbf{--temp-dir}: Directory for temporary files (optional)
+    \item \textbf{--pattern}: File pattern to match when input is a directory
+\end{itemize}
+
+\section{File Handling}
+
+Both components include robust file handling to ensure reliability across different environments.
+
+\subsection{Input Validation}
+
+Input files and directories are validated to ensure they exist and are accessible:
+
+\begin{algorithm}
+\caption{Input Validation Algorithm}
+\begin{algorithmic}[1]
+\Procedure{ValidateInput}{$input\_path, is\_directory$}
+    \If{$is\_directory$}
+        \If{not path exists or not is directory}
+            \State Report error and exit
+        \EndIf
+    \Else
+        \If{not path exists or not is file}
+            \State Report error and exit
+        \EndIf
+    \EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{File Path Handling}
+
+File paths are handled using Python's \texttt{pathlib} module to ensure cross-platform compatibility:
+
+\begin{algorithm}
+\caption{File Path Handling Algorithm}
+\begin{algorithmic}[1]
+\Procedure{HandleFilePath}{$path, is\_output$}
+    \State Convert $path$ to Path object
+    \If{$is\_output$}
+        \State Create parent directories if they don't exist
+    \EndIf
+    \State Return Path object
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Special Characters and Spaces}
+
+File paths with special characters and spaces are handled correctly using proper quoting and escaping:
+
+\begin{algorithm}
+\caption{Special Character Handling Algorithm}
+\begin{algorithmic}[1]
+\Procedure{HandleSpecialCharacters}{$path$}
+    \State Convert $path$ to string
+    \State If necessary, quote the path
+    \State Return processed path
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\section{Implementation Considerations}
+
+This section discusses important considerations in the implementation of the system.
+
+\subsection{Performance Considerations}
+
+The system's performance is affected by the following factors:
+
+\begin{enumerate}
+    \item \textbf{CSV Size}: Larger CSV files require more memory and processing time
+    \item \textbf{Number of Systems/LPARs/Applications}: More entities result in larger diagrams and SVGs
+    \item \textbf{PlantUML Rendering}: The PlantUML jar's performance affects the SVG generation time
+    \item \textbf{SVG Size}: Larger SVGs may be slower to load and interact with in browsers
+\end{enumerate}
+
+To address these concerns, the implementation includes:
+
+\begin{enumerate}
+    \item \textbf{Efficient Data Structures}: Using dictionaries for O(1) lookups
+    \item \textbf{Minimised Duplicate Processing}: Avoiding redundant operations
+    \item \textbf{Incremental Parsing}: Processing files line by line rather than loading entirely into memory
+    \item \textbf{Optimised SVG}: Minimising unnecessary SVG elements
+\end{enumerate}
+
+\subsection{Error Handling}
+
+The implementation includes comprehensive error handling:
+
+\begin{enumerate}
+    \item \textbf{File I/O Errors}: Handling missing or inaccessible files
+    \item \textbf{CSV Parsing Errors}: Handling malformed CSV data
+    \item \textbf{PlantUML Execution Errors}: Handling PlantUML jar issues
+    \item \textbf{SVG Generation Errors}: Handling failures in SVG enhancement
+\end{enumerate}
+
+Errors are reported with clear messages to facilitate troubleshooting.
+
+\subsection{Cross-Platform Compatibility}
+
+The implementation ensures cross-platform compatibility:
+
+\begin{enumerate}
+    \item \textbf{Path Handling}: Using \texttt{pathlib} for platform-independent path manipulation
+    \item \textbf{File Operations}: Using platform-agnostic file operations
+    \item \textbf{External Process Execution}: Properly handling shell commands across platforms
+    \item \textbf{Temporary Files}: Using the \texttt{tempfile} module for platform-appropriate temporary directories
+\end{enumerate}
+
+\section{Algorithm Complexity Analysis}
+
+This section analyses the time and space complexity of the key algorithms.
+
+\subsection{CSV Parsing}
+
+\begin{itemize}
+    \item \textbf{Time Complexity}: O(n), where n is the number of rows in the CSV files
+    \item \textbf{Space Complexity}: O(n), where n is the total number of entities (systems, LPARs, applications)
+\end{itemize}
+
+\subsection{Application Matching}
+
+\begin{itemize}
+    \item \textbf{Time Complexity}: O(c * l), where c is the number of computers and l is the number of LPARs
+    \item \textbf{Space Complexity}: O(c), additional space for tracking unmatched computers
+\end{itemize}
+
+\subsection{PlantUML Generation}
+
+\begin{itemize}
+    \item \textbf{Time Complexity}: O(s + l + a), where s is the number of systems, l is the number of LPARs, and a is the number of applications
+    \item \textbf{Space Complexity}: O(s + l + a), for the generated PlantUML text
+\end{itemize}
+
+\subsection{PlantUML Hierarchy Extraction}
+
+\begin{itemize}
+    \item \textbf{Time Complexity}: O(n), where n is the number of lines in the PlantUML file
+    \item \textbf{Space Complexity}: O(d), where d is the depth of the hierarchy (for the current path stack) plus O(e) where e is the number of entities in the hierarchy
+\end{itemize}
+
+\subsection{SVG Enhancement}
+
+\begin{itemize}
+    \item \textbf{Time Complexity}: O(g), where g is the number of group elements in the SVG
+    \item \textbf{Space Complexity}: O(g), for storing element information
+\end{itemize}
+
+\section{Testing Strategy}
+
+A comprehensive testing strategy should include:
+
+\begin{enumerate}
+    \item \textbf{Unit Tests}: Testing individual functions and methods
+    \item \textbf{Integration Tests}: Testing the interaction between components
+    \item \textbf{End-to-End Tests}: Testing the complete pipeline
+    \item \textbf{Edge Case Tests}: Testing unusual or extreme inputs
+\end{enumerate}
+
+Key test cases should include:
+\begin{enumerate}
+    \item Empty CSV files
+    \item CSV files with missing columns
+    \item Large CSV files
+    \item CSV files with special characters
+    \item Unmatched applications
+    \item Systems with no LPARs
+    \item LPARs with no applications
+\end{enumerate}
+
+\section{Extension Possibilities}
+
+The system can be extended in various ways:
+
+\begin{enumerate}
+    \item \textbf{Additional Diagram Types}: Supporting other diagram formats
+    \item \textbf{More Interactive Features}: Adding filtering, searching, or comparative views
+    \item \textbf{Enhanced Visualisation}: Adding charts, graphs, or heat maps
+    \item \textbf{Integration with Other Tools}: Adding support for exporting to other tools
+    \item \textbf{Real-Time Updates}: Supporting live data updates
+\end{enumerate}
+
+\section{Conclusion}
+
+This document has provided a detailed technical overview of the Hardware Inventory Visualisation system, including algorithms, data structures, and implementation considerations. With this information, developers should be able to understand, recreate, and extend the system as needed.
+
+The modular design, with separate components for CSV parsing and SVG generation, facilitates maintenance and extension. The careful attention to file handling, error handling, and cross-platform compatibility ensures reliability across different environments.
+
+The interactive SVG output provides a valuable tool for exploring hardware inventory data, enabling users to understand the relationships between systems, LPARs, and applications in a intuitive way.
+
+\end{document}
