@@ -94,10 +94,10 @@ def parse_plantuml(puml_file):
                 
                 # Match LPAR rectangle (only if we're inside a chassis)
                 if current_chassis is not None:
-                    # Fixed: Now properly handling 6 groups including the stereotype
+                    # lpar_match = re.search(r'rectangle\s+"([^"]+)\\nCPU:\s+([^\\]+)\\nMemory:\s+([^\\]+)\\nOS:\s+([^"]+)"\s+as\s+(\w+)\s+<<LPAR>>', line)
                     lpar_match = re.search(r'rectangle\s+"([^"]+)\\nCPU:\s+([^\\]+)\\nMemory:\s+([^\\]+)\\nOS:\s+([^"]+)"\s+as\s+(\w+)\s+<<(LPAR|UnmatchedLPAR)>>', line)
                     if lpar_match:
-                        lpar_name, lpar_cpu, lpar_memory, lpar_os, lpar_id, lpar_type = lpar_match.groups()
+                        lpar_name, lpar_cpu, lpar_memory, lpar_os, lpar_id = lpar_match.groups()
                         
                         try:
                             lpar_cpu = float(lpar_cpu)
@@ -115,7 +115,6 @@ def parse_plantuml(puml_file):
                             "cpu": lpar_cpu,
                             "memory": lpar_memory,
                             "os": lpar_os,
-                            "type": lpar_type,  # Added type field to capture LPAR vs UnmatchedLPAR
                             "apps": []
                         }
                         
