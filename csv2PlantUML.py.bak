@@ -3,18 +3,16 @@
 """
 CSV to PlantUML/C4 Diagram Generator
 
-This script parses hardware inventory CSV files and generates PlantUML and C4 diagram files 
-representing the hardware/software architecture.
+This script parses hardware inventory CSV files, specifically chasses.csv and fixed_inventory_file.csv,
+and generates PlantUML and C4 diagram files representing the hardware/software architecture.
 
 Usage:
-    python csv2PlantUML.py --input <input_file_or_directory> --output <output_file_or_directory> --format <plantuml|c4|both>
+    python csv2PlantUML.py --input-dir <input_directory> --output-dir <output_directory> --format <plantuml|c4|both>
 
 Arguments:
-    --input          Input CSV file or directory containing CSV files
-    --output         Output file or directory where the output files will be written
+    --input-dir      Directory containing the input CSV files
+    --output-dir     Directory where the output files will be written
     --format         Output format: 'plantuml', 'c4', or 'both'
-    --boii2-pattern  Pattern to match BOII2-type files (default: '*boii2*.csv')
-    --boi-pattern    Pattern to match BOI-type files (default: '*boi*.csv')
 """
 
 import os
@@ -22,7 +20,6 @@ import sys
 import csv
 import argparse
 import re
-import glob
 from pathlib import Path
 
 
@@ -47,7 +44,7 @@ class HardwareInventory:
         self.lpars = {}    # Logical partitions
         self.apps = {}     # Applications
 
-    def load_boii2_csv(self, filename):
+    def load_chasses_csv(self, filename):
         """
         Load and parse the BOII2 CSV file containing LPAR information.
         """
@@ -57,7 +54,7 @@ class HardwareInventory:
             with open(filename, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    # Extract system (chassis) information
+                    # Extract system (chasses) information
                     system_name = row.get('Managed System Name', '')
                     system_serial = row.get('Managed System Serial', '')
                     
@@ -125,7 +122,7 @@ class HardwareInventory:
             print(f"Error loading BOII2 CSV: {e}")
             raise
 
-    def load_sample_boi_csv(self, filename):
+    def load_fixed_inventory_file_csv(self, filename):
         """
         Load and parse the Sample BOI CSV file containing application information.
         """
@@ -232,7 +229,7 @@ class HardwareInventory:
             f.write("  FontSize 10\n")
             f.write("}\n\n")
             
-            # Generate diagram content for each system/chassis
+            # Generate diagram content for each system/chasses
             for system_name, system in self.systems.items():
                 system_id = clean_id(system_name)
                 
@@ -351,7 +348,7 @@ class HardwareInventory:
             
         print(f"C4 diagram generated successfully.")
 
-    def analyse(self):
+    def analyze(self):
         """
         Print analysis of the loaded data.
         """
@@ -382,170 +379,60 @@ class HardwareInventory:
             print(f"LPAR with most applications: {max_app_lpar[0]} ({len(max_app_lpar[1].get('applications', []))} apps)")
 
 
-def find_csv_files(input_path, boii2_pattern='*boii2*.csv', boi_pattern='*boi*.csv'):
-    """
-    Find CSV files based on patterns. If input_path is a file, return it directly.
-    If it's a directory, search for files matching the patterns.
-    """
-    input_path = Path(input_path)
-    
-    if input_path.is_file():
-        # If it's a single file, determine its type based on filename
-        filename_lower = input_path.name.lower()
-        if 'boii2' in filename_lower:
-            return [input_path], []
-        elif 'boi' in filename_lower:
-            return [], [input_path]
-        else:
-            # Try to guess based on content or return as potential boii2 file
-            return [input_path], []
-    
-    elif input_path.is_dir():
-        # Search for files matching patterns
-        boii2_files = list(input_path.glob(boii2_pattern))
-        boi_files = list(input_path.glob(boi_pattern))
-        
-        # If patterns don't match, try case-insensitive search
-        if not boii2_files:
-            for file in input_path.glob('*.csv'):
-                if 'boii2' in file.name.lower():
-                    boii2_files.append(file)
-        
-        if not boi_files:
-            for file in input_path.glob('*.csv'):
-                if 'boi' in file.name.lower() and 'boii2' not in file.name.lower():
-                    boi_files.append(file)
-        
-        return boii2_files, boi_files
-    
-    else:
-        raise FileNotFoundError(f"Input path '{input_path}' does not exist")
-
-
-def process_csv_files(boii2_files, boi_files, output_path, format_type):
-    """
-    Process the CSV files and generate the requested output formats.
-    """
-    # Determine output file paths
-    output_path = Path(output_path)
-    
-    if output_path.is_dir() or not output_path.suffix:
-        # Output is a directory, generate standard filenames
-        output_dir = output_path
-        output_dir.mkdir(parents=True, exist_ok=True)
-        plantuml_output = output_dir / 'hardware_inventory.puml'
-        c4_output = output_dir / 'hardware_inventory_c4.puml'
-    else:
-        # Output is a file, use it as base for naming
-        output_dir = output_path.parent
-        output_dir.mkdir(parents=True, exist_ok=True)
-        base_name = output_path.stem
-        plantuml_output = output_dir / f'{base_name}.puml'
-        c4_output = output_dir / f'{base_name}_c4.puml'
-    
-    # Process each combination of BOII2 and BOI files
-    if not boii2_files and not boi_files:
-        print("Warning: No CSV files found to process.")
-        return
-    
-    # If we have multiple files, process them in combinations
-    processed_any = False
-    
-    for i, boii2_file in enumerate(boii2_files or [None]):
-        for j, boi_file in enumerate(boi_files or [None]):
-            
-            # Skip if both are None
-            if boii2_file is None and boi_file is None:
-                continue
-            
-            # Create inventory instance
-            inventory = HardwareInventory()
-            
-            # Load BOII2 file if available
-            if boii2_file:
-                try:
-                    inventory.load_boii2_csv(boii2_file)
-                except Exception as e:
-                    print(f"Error loading {boii2_file}: {e}")
-                    continue
-            
-            # Load BOI file if available
-            if boi_file:
-                try:
-                    inventory.load_sample_boi_csv(boi_file)
-                except Exception as e:
-                    print(f"Error loading {boi_file}: {e}")
-                    continue
-            
-            # If we have multiple files, adjust output names
-            if len(boii2_files or []) > 1 or len(boi_files or []) > 1:
-                suffix = f"_{i}_{j}" if boii2_file and boi_file else f"_{i if boii2_file else j}"
-                current_plantuml = output_dir / f'{plantuml_output.stem}{suffix}.puml'
-                current_c4 = output_dir / f'{c4_output.stem}{suffix}.puml'
-            else:
-                current_plantuml = plantuml_output
-                current_c4 = c4_output
-            
-            # Analyse the loaded data
-            inventory.analyse()
-            
-            # Generate the requested formats
-            if format_type in ['plantuml', 'both']:
-                try:
-                    inventory.generate_plantuml(current_plantuml)
-                    processed_any = True
-                except Exception as e:
-                    print(f"Error generating PlantUML: {e}")
-            
-            if format_type in ['c4', 'both']:
-                try:
-                    inventory.generate_c4(current_c4)
-                    processed_any = True
-                except Exception as e:
-                    print(f"Error generating C4: {e}")
-    
-    return processed_any
-
-
 def main():
     parser = argparse.ArgumentParser(description='Generate PlantUML and C4 diagrams from hardware inventory CSV files.')
-    parser.add_argument('--input', required=True, 
-                        help='Input CSV file or directory containing CSV files')
-    parser.add_argument('--output', required=True, 
-                        help='Output file or directory where the output files will be written')
+    parser.add_argument('--input-dir', required=True, help='Directory containing the input CSV files')
+    parser.add_argument('--output-dir', required=True, help='Directory where the output files will be written')
     parser.add_argument('--format', choices=['plantuml', 'c4', 'both'], default='both', 
                         help='Output format: plantuml, c4, or both')
-    parser.add_argument('--boii2-pattern', default='*boii2*.csv',
-                        help='Pattern to match BOII2-type files (default: *boii2*.csv)')
-    parser.add_argument('--boi-pattern', default='*boi*.csv',
-                        help='Pattern to match BOI-type files (default: *boi*.csv)')
     
     args = parser.parse_args()
     
-    try:
-        # Find CSV files based on input
-        boii2_files, boi_files = find_csv_files(args.input, args.boii2_pattern, args.boi_pattern)
-        
-        print(f"Found {len(boii2_files)} BOII2 files and {len(boi_files)} BOI files")
-        
-        if boii2_files:
-            print("BOII2 files:", [str(f) for f in boii2_files])
-        if boi_files:
-            print("BOI files:", [str(f) for f in boi_files])
-        
-        # Process the files
-        success = process_csv_files(boii2_files, boi_files, args.output, args.format)
-        
-        if success:
-            print("\nAll operations completed successfully.")
-            return 0
-        else:
-            print("\nNo files were successfully processed.")
-            return 1
-            
-    except Exception as e:
-        print(f"Error: {e}")
+    # Check if input directory exists
+    input_dir = Path(args.input_dir)
+    if not input_dir.exists() or not input_dir.is_dir():
+        print(f"Error: Input directory '{args.input_dir}' does not exist or is not a directory.")
         return 1
+    
+    # Create output directory if it doesn't exist
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Find input files
+    chasses_file = None
+    fixed_inventory_file = None
+    
+    for file in input_dir.glob('*.csv'):
+        if file.name.lower() == 'chasses.csv':
+            chasses_file = file
+        elif file.name.lower() == 'fixed_inventory_file.csv':
+            fixed_inventory_file = file
+    
+    if not chasses_file:
+        print("Error: Could not find chasses.csv in the input directory.")
+        return 1
+    
+    if not fixed_inventory_file:
+        print("Error: Could not find 'fixed_inventory_file.csv' in the input directory.")
+        return 1
+    
+    # Load and process the data
+    inventory = HardwareInventory()
+    inventory.load_chasses_csv(chasses_file)
+    inventory.load_fixed_inventory_file_csv(fixed_inventory_file)
+    inventory.analyze()
+    
+    # Generate the diagrams
+    if args.format in ['plantuml', 'both']:
+        plantuml_output = output_dir / 'hardware_inventory.puml'
+        inventory.generate_plantuml(plantuml_output)
+    
+    if args.format in ['c4', 'both']:
+        c4_output = output_dir / 'hardware_inventory_c4.puml'
+        inventory.generate_c4(c4_output)
+    
+    print("\nAll operations completed successfully.")
+    return 0
 
 
 if __name__ == '__main__':

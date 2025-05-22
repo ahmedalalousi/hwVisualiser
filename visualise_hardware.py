@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Hardware Inventory Visualization Script
+Hardware Inventory Visualisation Script
 
-This script combines the parsing and visualization of hardware inventory data.
-It parses PlantUML or CSV files and generates an interactive HTML visualization.
+This script combines the parsing and visualisation of hardware inventory data.
+It parses PlantUML or CSV files and generates an interactive HTML visualisation.
 
 Usage:
-    python visualize_hardware.py --input <input_file_or_dir> --output <output_html>
+    python visualise_hardware.py --input <input_file_or_dir> --output <output_html>
 
 Arguments:
     --input             Input PlantUML file or CSV directory
@@ -44,27 +44,27 @@ def process_csv_files(input_dir, temp_dir):
         return None
     
     # Find input files
-    chassis = None
+    chasses_file = None
     fixed_inventory_file = None
     
     for file in Path(input_dir).glob('*.csv'):
         if file.name.lower() == 'chasses.csv':
-            chassis = file
+            chasses_file = file
         elif file.name.lower() == 'fixed_inventory_file.csv':
             fixed_inventory_file = file
     
-    if not chassis:
-        print("Error: Could not find BOII2.csv in the input directory.")
+    if not chasses_file:
+        print("Error: Could not find chasses.csv in the input directory.")
         return None
     
     if not fixed_inventory_file:
-        print("Error: Could not find 'sample BOI.csv' in the input directory.")
+        print("Error: Could not find fixed_inventory_file.csv in the input directory.")
         return None
     
     # Generate PlantUML from CSV
     inventory = HardwareInventory()
-    inventory.load_chassis_csv(chassis)
-    inventory.load_fixed_inventory_file.csv(fixed_inventory_file)
+    inventory.load_chasses_csv(chasses_file)
+    inventory.load_fixed_inventory_file_csv(fixed_inventory_file)
     
     # Generate PlantUML file
     puml_output = os.path.join(temp_dir, 'hardware_inventory.puml')
@@ -74,7 +74,7 @@ def process_csv_files(input_dir, temp_dir):
     return parse_plantuml(puml_output)
 
 def generate_html(data, output_file):
-    """Generate HTML visualization from the data."""
+    """Generate HTML visualisation from the data."""
     # Read the template HTML file
     script_dir = os.path.dirname(os.path.abspath(__file__))
     template_path = os.path.join(script_dir, 'hardware_inventory_visualisation.html')
@@ -87,28 +87,28 @@ def generate_html(data, output_file):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hardware Inventory Visualization</title>
+    <title>Hardware Inventory Visualisation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <style>
         /* CSS styles here */
         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-        #visualization { width: 100%; }
+        #visualisation { width: 100%; }
         /* More styles would be here */
     </style>
 </head>
 <body>
-    <div id="visualization">
-        <h1>Hardware Inventory Visualization</h1>
+    <div id="visualisation">
+        <h1>Hardware Inventory Visualisation</h1>
         <div id="content"></div>
     </div>
     <script>
         // Data will be loaded here
         const mockData = null;
         
-        // JavaScript for visualization would be here
+        // JavaScript for visualisation would be here
         const data = mockData;
         console.log("Loaded data:", data);
-        // Visualization code would be here
+        // Visualisation code would be here
     </script>
 </body>
 </html>"""
@@ -159,11 +159,11 @@ def generate_html(data, output_file):
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(modified_html)
     
-    print(f"Generated HTML visualization: {output_file}")
+    print(f"Generated HTML visualisation: {output_file}")
     return output_file
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate interactive hardware inventory visualization')
+    parser = argparse.ArgumentParser(description='Generate interactive hardware inventory visualisation')
     parser.add_argument('--input', required=True, help='Input PlantUML file or CSV directory')
     parser.add_argument('--output', required=True, help='Output HTML file')
     parser.add_argument('--input-type', choices=['puml', 'csv'], help='Input type (default: auto-detect)')
@@ -220,7 +220,7 @@ def main():
     if not args.temp_dir:  # Only remove if we created it
         shutil.rmtree(temp_dir)
     
-    print("Visualization completed successfully.")
+    print("Visualisation completed successfully.")
     return 0
 
 if __name__ == "__main__":
