@@ -1,0 +1,384 @@
+\documentclass[11pt,a4paper]{article}
+
+% Package imports for modern LaTeX with LuaLaTeX
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{microtype}
+
+% Page geometry
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm,
+    headheight=1cm,
+    headsep=0.5cm,
+    footskip=1cm
+}
+
+% Font setup using Helvetica (system font on Mac)
+% \setmainfont{Helvetica}[
+%    Path = /System/Library/Fonts/Helvetica.ttc,
+%    UprightFont = *,
+%    BoldFont = *,
+%    ItalicFont = *,
+%    BoldItalicFont = *
+%]
+
+\setmainfont{Helvetica}
+\setsansfont{Helvetica}
+
+\setmonofont{Monaco}
+
+% Paragraph formatting - no indentation, justified text
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\renewcommand{\baselinestretch}{1.1}
+
+% Colour definitions
+\definecolor{codeblue}{RGB}{0,102,204}
+\definecolor{codegrey}{RGB}{128,128,128}
+\definecolor{codegreen}{RGB}{0,128,0}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    rulecolor=\color{gray!30},
+    numbers=none,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    showstringspaces=false,
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue},
+    stringstyle=\color{codegrey},
+    escapeinside={(*@}{@*)},
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
+    aboveskip=10pt,
+    belowskip=10pt
+}
+
+% Header and footer setup
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{boiVisualiser Setup Guide}}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\small Hardware Inventory Visualisation Tool}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+% Section title formatting
+\titleformat{\section}
+{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% Hyperlink setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=codeblue,
+    pdfauthor={Ahmed Al-Alousi},
+    pdftitle={boiVisualiser Setup Guide},
+    pdfsubject={Hardware Inventory Visualisation Tool Setup},
+    pdfkeywords={Python, Hardware, Visualisation, PlantUML, Setup}
+}
+
+% List formatting
+\setlist[itemize]{nosep,leftmargin=1.5em}
+\setlist[enumerate]{nosep,leftmargin=1.5em}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries boiVisualiser Setup Guide\par}
+\vspace{1cm}
+{\Large Hardware Inventory Visualisation Tool\par}
+\vspace{2cm}
+
+{\large\textbf{Version 1.0}\par}
+\vspace{0.5cm}
+{\large\today\par}
+
+\vfill
+
+{\large Ahmed Al-Alousi\par}
+\vspace{0.5cm}
+{\normalsize\url{https://github.com/ahmedalalousi/boiVisualiser}\par}
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+The boiVisualiser is a comprehensive hardware inventory visualisation tool designed to parse PlantUML hardware diagrams and convert them into interactive HTML visualisations. This guide provides detailed instructions for setting up the development environment and using the automated setup script.
+
+The tool consists of several Python scripts that work together to process hardware inventory data from PlantUML files or CSV sources, converting them into JSON format and generating interactive web-based visualisations using D3.js.
+
+\section{Quick Setup (Automated)}
+
+The easiest method to begin using boiVisualiser is through the automated setup script. This approach handles all dependencies, environment configuration, and installation procedures automatically.
+
+To initiate the automated setup process, execute the following commands in your terminal:
+
+\begin{lstlisting}[language=bash]
+# Download and run the setup script
+curl -O https://raw.githubusercontent.com/ahmedalalousi/boiVisualiser/main/setup.py
+python3 setup.py
+\end{lstlisting}
+
+The automated setup script performs the following operations sequentially:
+
+\begin{enumerate}
+\item Verifies pyenv installation (installs if required)
+\item Configures Python 3.13.3 via pyenv
+\item Creates a dedicated virtual environment
+\item Clones the repository from GitHub
+\item Installs all necessary dependencies
+\end{enumerate}
+
+\subsection{Setup Script Options}
+
+The setup script accepts several command-line arguments to customise the installation process:
+
+\begin{lstlisting}[language=bash]
+python3 setup.py [options]
+
+Options:
+  --repo-dir DIRECTORY    Directory to clone the repository 
+                         (default: ./boiVisualiser)
+  --venv-name NAME       Name for virtual environment 
+                         (default: boiVisualiser-env)
+  --skip-clone           Skip cloning if repository already exists locally
+\end{lstlisting}
+
+\subsection{Platform-Specific Setup Procedures}
+
+The setup script adapts its behaviour based on the detected operating system, ensuring optimal configuration for each platform.
+
+\subsubsection{macOS Configuration}
+
+For macOS users, the setup script performs the following additional steps:
+
+\begin{itemize}
+\item Verifies Homebrew installation and installs if not present
+\item Installs pyenv and pyenv-virtualenv via Homebrew package manager
+\item Automatically configures shell environment for pyenv integration
+\item Handles Apple Silicon (M1/M2) specific PATH configurations
+\end{itemize}
+
+\subsubsection{Linux Configuration}
+
+For Linux distributions, the setup process includes:
+
+\begin{itemize}
+\item Installation of pyenv using the official installer script
+\item Automatic shell configuration for bash and zsh environments
+\item Dependency verification and installation prompts
+\end{itemize}
+
+\subsubsection{Universal Setup Steps}
+
+Regardless of the operating system, the following operations are performed:
+
+\begin{itemize}
+\item Installation of Python 3.13.3 via pyenv
+\item Creation of an isolated virtual environment
+\item Repository cloning from the official GitHub source
+\item Installation of all project dependencies from requirements.txt
+\end{itemize}
+
+\section{Manual Setup}
+
+For users who prefer manual installation or require customised setup procedures, the following steps provide a comprehensive manual installation guide.
+
+\subsection{Prerequisites}
+
+Before beginning the manual setup process, ensure the following prerequisites are installed and properly configured:
+
+\subsubsection{pyenv Installation}
+
+pyenv serves as the Python version manager and is essential for maintaining consistent Python environments across different systems.
+
+For macOS systems using Homebrew:
+\begin{lstlisting}[language=bash]
+brew install pyenv pyenv-virtualenv
+\end{lstlisting}
+
+For Linux systems:
+\begin{lstlisting}[language=bash]
+curl https://pyenv.run | bash
+\end{lstlisting}
+
+\subsubsection{Python Version Installation}
+
+Install the specific Python version required by the project:
+\begin{lstlisting}[language=bash]
+pyenv install 3.13.3
+\end{lstlisting}
+
+\subsection{Installation Steps}
+
+Follow these sequential steps to complete the manual installation:
+
+\subsubsection{Repository Cloning}
+
+Clone the project repository to your local development environment:
+\begin{lstlisting}[language=bash]
+git clone https://github.com/ahmedalalousi/boiVisualiser.git
+cd boiVisualiser
+\end{lstlisting}
+
+\subsubsection{Virtual Environment Creation}
+
+Create and activate a dedicated virtual environment for the project:
+\begin{lstlisting}[language=bash]
+pyenv virtualenv 3.13.3 boiVisualiser-env
+pyenv activate boiVisualiser-env
+\end{lstlisting}
+
+\subsubsection{Dependency Installation}
+
+Install all required Python packages using pip:
+\begin{lstlisting}[language=bash]
+pip install -r requirements.txt
+\end{lstlisting}
+
+\section{Usage Instructions}
+
+After completing the setup process, the boiVisualiser tools are ready for use. Begin by activating the virtual environment and utilising the available command-line tools.
+
+\subsection{Environment Activation}
+
+Always activate the virtual environment before using the tools:
+\begin{lstlisting}[language=bash]
+pyenv activate boiVisualiser-env
+\end{lstlisting}
+
+\subsection{PlantUML to JSON Conversion}
+
+Convert PlantUML hardware diagrams to JSON format for processing:
+\begin{lstlisting}[language=bash]
+python puml_to_json.py --input hardware.puml --output data.json
+\end{lstlisting}
+
+\subsection{Visualisation Generation}
+
+Generate interactive HTML visualisations from PlantUML files:
+\begin{lstlisting}[language=bash]
+python visualise_hardware.py --input hardware.puml --output visualization.html --open-browser
+\end{lstlisting}
+
+The \texttt{-{-}open-browser} flag automatically opens the generated visualisation in your default web browser upon completion.
+
+\subsection{Command-Line Options}
+
+Both tools provide comprehensive command-line options for customising the processing workflow:
+
+\begin{itemize}
+\item \texttt{-{-}input}: Specifies the input file or directory path
+\item \texttt{-{-}output}: Defines the output file location
+\item \texttt{-{-}input-type}: Explicitly sets the input format (puml or csv)
+\item \texttt{-{-}temp-dir}: Specifies temporary directory for intermediate files
+\item \texttt{-{-}open-browser}: Automatically opens output in web browser
+\end{itemize}
+
+\section{Troubleshooting}
+
+This section addresses common issues encountered during setup and usage of the boiVisualiser tools.
+
+\subsection{pyenv Not Found After Installation}
+
+If pyenv commands are not recognised after installation, restart your terminal session or manually reload your shell configuration:
+
+For zsh users:
+\begin{lstlisting}[language=bash]
+source ~/.zshrc
+\end{lstlisting}
+
+For bash users:
+\begin{lstlisting}[language=bash]
+source ~/.bashrc
+\end{lstlisting}
+
+\subsection{Permission Errors on macOS}
+
+macOS users may encounter permission prompts during installation. Accept any requests to install Xcode command line tools when prompted, as these are required for compiling Python extensions.
+
+\subsection{Virtual Environment Activation Issues}
+
+If virtual environment activation fails, verify that pyenv is properly configured in your shell environment. Manually add the following configuration to your shell profile:
+
+\begin{lstlisting}[language=bash]
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc  
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
+\end{lstlisting}
+
+Replace \texttt{.zshrc} with \texttt{.bashrc} if using bash as your default shell.
+
+\subsection{Dependency Installation Failures}
+
+If package installation fails, ensure you are operating within the activated virtual environment and have the latest pip version:
+
+\begin{lstlisting}[language=bash]
+pyenv activate boiVisualiser-env
+pip install --upgrade pip
+pip install -r requirements.txt
+\end{lstlisting}
+
+\section{Project Structure}
+
+Understanding the project structure facilitates effective usage and potential contributions to the codebase.
+
+\subsection{Core Components}
+
+The boiVisualiser consists of several key components:
+
+\begin{itemize}
+\item \textbf{puml\_to\_json.py}: Parses PlantUML files and converts them to JSON format
+\item \textbf{visualise\_hardware2.py}: Generates interactive HTML visualisations
+\item \textbf{csv2PlantUML.py}: Converts CSV inventory data to PlantUML format
+\item \textbf{hardware\_inventory\_visualisation.html}: Template for HTML output
+\item \textbf{setup.py}: Automated setup and configuration script
+\item \textbf{requirements.txt}: Python dependency specifications
+\end{itemize}
+
+\subsection{Data Flow}
+
+The typical data processing workflow follows this sequence:
+
+\begin{enumerate}
+\item CSV files or PlantUML diagrams serve as input sources
+\item Data is parsed and converted to standardised JSON format
+\item JSON data is embedded into HTML template
+\item Interactive visualisation is generated using D3.js
+\item Output is displayed in web browser for analysis
+\end{enumerate}
+
+\section{Conclusion}
+
+The boiVisualiser provides a comprehensive solution for hardware inventory visualisation, combining the power of PlantUML diagramming with interactive web-based presentations. The automated setup script ensures rapid deployment across different platforms, whilst the manual installation options provide flexibility for customised environments.
+
+For additional support, feature requests, or bug reports, please visit the project repository at \url{https://github.com/ahmedalalousi/boiVisualiser} or submit issues through the GitHub interface.
+
+\end{document}
